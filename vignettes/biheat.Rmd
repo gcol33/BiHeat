@@ -1,0 +1,118 @@
+---
+title: "Getting started with BiHeat"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started with BiHeat}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse  = TRUE,
+  comment   = "#>",
+  fig.width = 6,
+  fig.height = 5,
+  dpi = 110
+)
+```
+
+```{r}
+library(BiHeat)
+```
+
+## Two matrices, one plot
+
+BiHeat draws a heatmap where each cell is split along a diagonal. The
+upper triangle encodes one matrix; the lower triangle encodes another.
+
+```{r}
+set.seed(1)
+species   <- LETTERS[1:6]
+sites     <- letters[1:8]
+observed  <- matrix(runif(48),  6, 8, dimnames = list(species, sites))
+predicted <- observed + matrix(rnorm(48, sd = 0.15), 6, 8,
+                               dimnames = list(species, sites))
+
+biheat(observed, predicted)
+```
+
+## The lifecycle
+
+`biheat()` is the one-shot entry point. Under the hood it runs a small
+three-stage lifecycle that you can use directly when you want to inspect
+or compose the paired object:
+
+```{r}
+clutch <- breed(observed, predicted)
+clutch
+```
+
+`breed()` aligns the two matrices on overlapping dimnames and computes
+comparison statistics. `incubate()` adds rendering options. `plot()`
+draws.
+
+```{r}
+breed(observed, predicted) |>
+  incubate(scale = "shared", split = "up") |>
+  plot()
+```
+
+`incubate()` calls are additive — every call layers new options on top
+of the existing config:
+
+```{r, eval = FALSE}
+breed(observed, predicted) |>
+  incubate(scale = "shared") |>
+  incubate(split = "up") |>
+  plot()
+```
+
+## Verbs
+
+A handful of verbs operate clutch-in / clutch-out:
+
+```{r}
+breed(observed, predicted) |>
+  switch_sides() |>     # swap which is upper / lower
+  straighten() |>       # flip the diagonal
+  bothways() |>         # toggle separate <-> shared scale
+  plot()
+```
+
+`comes_out()` pulls the tidy data back out of a clutch or a rendered
+ggplot:
+
+```{r}
+breed(observed, predicted) |> comes_out() |> head()
+```
+
+## Separate vs. shared scales
+
+By default each side gets its own colour scale (`scale = "separate"`),
+which is appropriate when the two matrices measure different things.
+When the two matrices live on the same scale, use `scale = "shared"` so
+cross-triangle comparisons are meaningful.
+
+```{r}
+biheat(observed, predicted, scale = "shared")
+```
+
+## Custom palettes
+
+`palettes()` bundles a pair of gradient palettes:
+
+```{r}
+biheat(
+  observed, predicted,
+  palettes = palettes(c("white", "darkorange", "darkred"),
+                      c("white", "steelblue",  "navy"))
+)
+```
+
+## Status
+
+Milestone 2 (this version): full lifecycle (`breed`/`incubate`/`plot`),
+verbs operate on clutch objects, `biheat()` as sugar over the
+lifecycle. Legend composition (split-tile glyph + paired gradient bars)
+and the `geom_biheat()` layer follow in the next milestone.
