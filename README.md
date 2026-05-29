@@ -1,6 +1,6 @@
 # BiHeat
 
-*you keep flicking back to the other heatmap*
+*two matrices in one heatmap*
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
