@@ -1,27 +1,16 @@
 # BiHeat
 
-Diagonally split heatmap cells for paired matrix visualization in R.
+*you keep flicking back to the other heatmap*
 
-Each cell shows two values at once: the upper triangle encodes one
-matrix, the lower triangle encodes another. One heatmap, two layers, no
-overplot.
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Why
+**Diagonally split heatmap cells: the upper triangle encodes one matrix, the lower triangle encodes the other.**
 
-Two matrices of the same shape come up everywhere — observed vs.
-predicted, mean vs. variance, correlation vs. significance, train vs.
-test performance, model A vs. model B, native vs. alien, before vs.
-after. The usual workaround is two side-by-side heatmaps and a lot of
-eye-tracking between them. BiHeat folds both into one plot.
-
-## Install
-
-```r
-# install.packages("remotes")
-remotes::install_github("gcol33/BiHeat")
-```
-
-## Quick start
+`BiHeat` draws two matrices of the same shape in a single heatmap by cutting every
+cell along a diagonal. One value goes in the upper triangle, the other in the lower,
+built on `ggplot2`. The usual approach puts two heatmaps side by side and leaves you
+tracking your eye between them; here the comparison lives inside one cell.
 
 ```r
 library(BiHeat)
@@ -36,13 +25,17 @@ predicted <- observed + matrix(rnorm(48, sd = 0.1), 6, 8,
 biheat(observed, predicted)
 ```
 
-Upper triangle = `observed` (white -> red). Lower triangle = `predicted`
-(white -> blue). Mismatches pop by eye.
+Upper triangle is `observed` (white to red), lower triangle is `predicted`
+(white to blue). Where the two disagree, the split is visible.
 
-## Two ways to call it
+Two matrices of the same shape come up constantly: observed vs. predicted, mean vs.
+variance, correlation vs. significance, train vs. test, model A vs. model B,
+before vs. after. All of them fit one BiHeat plot.
 
-`biheat()` is the one-shot entry point. It is exactly equivalent to the
-three-stage lifecycle below, so pick whichever reads better in context:
+## One call or three stages
+
+`biheat()` is the one-shot entry point. It is exactly equivalent to the three-stage
+lifecycle below, so use whichever reads better in context:
 
 ```r
 # one-shot
@@ -54,9 +47,10 @@ breed(observed, predicted) |>
   plot()
 ```
 
-`breed()` returns a **clutch** — a paired-matrix object holding the
-aligned data plus comparison statistics. `incubate()` configures it.
-`plot()` renders it.
+`breed()` pairs the two matrices into a **clutch** and aligns them on overlapping
+row and column names, then computes Pearson and Spearman correlation, RMSE, MAE, and
+NA counts. `incubate()` layers on rendering options (additive, the way `ggplot2`'s
+`+` is). `plot()` draws.
 
 ```r
 clutch <- breed(observed, predicted)
@@ -71,31 +65,52 @@ clutch
 
 ## Public API
 
-| Function           | Role                                             |
-|--------------------|--------------------------------------------------|
-| `biheat()`         | One-shot heatmap from two matrices              |
-| `breed()`          | Pair matrices into a clutch (auto-aligns names) |
-| `incubate()`       | Set rendering options on a clutch (additive)    |
-| `plot(clutch)`     | Render a clutch to a ggplot                     |
-| `switch_sides()`   | Swap which matrix is upper / lower              |
-| `straighten()`     | Flip the diagonal direction                     |
-| `bothways()`       | Toggle separate / shared colour scales          |
-| `comes_out()`      | Pull the tidy data back out                     |
-| `palettes()`       | Bundle paired gradient palettes                 |
-| `theme_biheat()`   | Minimal heatmap theme                           |
+| Function         | Role                                            |
+|------------------|-------------------------------------------------|
+| `biheat()`       | One-shot heatmap from two matrices              |
+| `breed()`        | Pair matrices into a clutch (auto-aligns names) |
+| `incubate()`     | Set rendering options on a clutch (additive)    |
+| `plot(clutch)`   | Render a clutch to a ggplot                      |
+| `switch_sides()` | Swap which matrix is upper / lower              |
+| `straighten()`   | Flip the diagonal direction                     |
+| `bothways()`     | Toggle separate / shared colour scales          |
+| `comes_out()`    | Pull the tidy data back out                     |
+| `palettes()`     | Bundle paired gradient palettes                 |
+| `theme_biheat()` | Minimal heatmap theme                           |
 
-`geom_biheat()` and the full split-tile legend are reserved in the API
-and land in upcoming milestones.
+The verbs go clutch-in, clutch-out, so they chain:
 
-## Separate vs. shared scales
+```r
+breed(observed, predicted) |>
+  switch_sides() |>   # swap which matrix is on top
+  straighten() |>     # flip the diagonal
+  bothways() |>       # toggle separate <-> shared scale
+  plot()
+```
 
-- `scale = "separate"` (default) — upper and lower each get their own
-  numeric range. Right when the two matrices live on different scales
+## Separate or shared scales
+
+- `scale = "separate"` (default) gives the upper and lower triangles their own
+  numeric ranges. Use it when the two matrices measure different things
   (correlation vs. p-value, mean vs. variance).
-- `scale = "shared"` — both triangles use a common range. Right when
-  the two matrices are directly comparable (observed vs. predicted on
-  the same units, model A vs. model B accuracy).
+- `scale = "shared"` puts both triangles on a common range, so cross-triangle
+  comparisons are meaningful. Use it when the matrices are directly comparable
+  (observed vs. predicted in the same units, model A vs. model B accuracy).
+
+## Installation
+
+```r
+# install.packages("remotes")
+remotes::install_github("gcol33/BiHeat")
+```
+
+## Documentation
+
+- [Getting started](https://github.com/gcol33/BiHeat/blob/main/vignettes/biheat.Rmd)
+
+`geom_biheat()` and the full split-tile legend are reserved in the API and land in
+a later milestone.
 
 ## License
 
-MIT (c) Gilles Colling.
+MIT (c) Gilles Colling. See the LICENSE file.
