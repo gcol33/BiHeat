@@ -8,13 +8,13 @@
 #'
 #' @keywords internal
 render_clutch <- function(x) {
-  cfg <- modifyList(clutch_defaults(), x$config %||% list())
+  cfg <- utils::modifyList(clutch_defaults(), x$config %||% list())
 
   scale              <- match.arg(cfg$scale,              c("separate", "shared"))
   split              <- match.arg(cfg$split,              c("down", "up"))
   legend_position    <- match.arg(cfg$legend_position,    c("right", "bottom", "none"))
   legend_orientation <- match.arg(cfg$legend_orientation, c("vertical", "horizontal"))
-  pal                <- resolve_palettes(cfg$palettes, NULL)
+  pal                <- as_palettes(cfg$palettes, NULL)
 
   row_levels <- attr(x$data, "row_levels")
   col_levels <- attr(x$data, "col_levels")
@@ -32,9 +32,11 @@ render_clutch <- function(x) {
     col_levels <- as.character(cfg$col_order)
   }
 
+  # Columns run left to right, rows top to bottom: row 1 sits at y = -1 so a
+  # plain upward y axis still reads in matrix order.
   d <- x$data
-  d$i <- match(d$row, row_levels)
-  d$j <- match(d$col, col_levels)
+  d$x <- match(d$col, col_levels)
+  d$y <- -match(d$row, row_levels)
 
   inset <- cfg$cell_inset %||% 0
   tri <- build_triangles(d, split = split, inset = inset)
@@ -104,8 +106,8 @@ render_clutch <- function(x) {
       labels = col_levels,
       expand = ggplot2::expansion(add = 0.5 - inset / 2)
     ) +
-    ggplot2::scale_y_reverse(
-      breaks = seq_along(row_levels),
+    ggplot2::scale_y_continuous(
+      breaks = -seq_along(row_levels),
       labels = row_levels,
       expand = ggplot2::expansion(add = 0.5 - inset / 2)
     ) +
@@ -228,25 +230,39 @@ inject_key_glyph <- function(p, spec) {
   )
 
   if (inherits(guide_box, "gtable")) {
-    n_rows <- nrow(guide_box)
+    # Sit directly under the colourbars. The guide box pads itself with an
+    # elastic row at the bottom; landing after that row would push the key
+    # out of the cell the box was measured for.
+    last_guide <- guide_box$layout$b[guide_box$layout$name == "guides"]
+    pos <- if (length(last_guide) > 0L) max(last_guide) else nrow(guide_box)
+
+    # The box pads itself to the height of the panel with elastic rows. Left
+    # in, they add to the rows below and the whole box outgrows the cell it
+    # was measured for, clipping the first colourbar.
+    elastic <- grid::unitType(guide_box$heights) == "null"
+    if (any(elastic)) {
+      guide_box$heights[elastic] <- grid::unit(0, "null")
+    }
+
     guide_box <- gtable::gtable_add_rows(
       guide_box,
       heights = grid::unit(0.4, "cm"),
-      pos = n_rows
+      pos = pos
     )
     guide_box <- gtable::gtable_add_rows(
       guide_box,
       heights = grid::unit(2.6, "cm"),
-      pos = n_rows + 1L
+      pos = pos + 1L
     )
     guide_box <- gtable::gtable_add_grob(
       guide_box,
       grobs = key,
-      t     = n_rows + 2L,
+      t     = pos + 2L,
       l     = 1L,
       r     = ncol(guide_box),
       name  = "biheat-key"
     )
+    guide_box <- resize_to_content(guide_box)
     g$grobs[[guide_idx[1]]] <- guide_box
   }
 
@@ -255,11 +271,34 @@ inject_key_glyph <- function(p, spec) {
   g
 }
 
+#' Refit a gtable's viewport around its rows
+#'
+#' The guide box arrives in a viewport measured for the guides it held at
+#' build time. Rows added afterwards fall outside that measurement, and grid
+#' centres the overflow, cutting the top guide off. Re-anchoring the viewport
+#' on the current row heights lets the box grow downward instead.
+#'
+#' @keywords internal
+resize_to_content <- function(gt) {
+  vp <- gt$vp
+  if (is.null(vp)) return(gt)
+  gt$vp <- grid::viewport(
+    x      = vp$x,
+    y      = vp$y,
+    width  = vp$width,
+    height = sum(gt$heights),
+    just   = vp$valid.just %||% vp$just,
+    name   = vp$name
+  )
+  gt
+}
+
 #' Build the split-tile key grob
 #'
 #' Returns a grid grob: a small split square with the upper triangle in the
 #' upper palette and the lower triangle in the lower palette, plus two
-#' callout lines to labels "<upper> (upper)" / "<lower> (lower)".
+#' callout lines running to `upper_name` and `lower_name`, each tagged with
+#' the side it labels.
 #'
 #' @keywords internal
 key_glyph_grob <- function(upper_name = "A",

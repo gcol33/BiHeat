@@ -49,22 +49,27 @@ as_biheat_data <- function(upper, lower,
 
 #' Expand cell-level data into triangle polygon coordinates
 #'
-#' Internal helper. Given a tidy `biheat_data` table with integer `i` (row)
-#' and `j` (column) positions, returns a long data frame of polygon vertices
-#' suitable for [ggplot2::geom_polygon()]. Two polygons are produced per
-#' input row: one for the upper-value triangle and one for the lower-value
-#' triangle. Cells share a unit-square footprint centered on `(j, i)`.
+#' Internal helper shared by the clutch renderer and [geom_biheat()]. Given a
+#' data frame of cell centres, returns a long data frame of polygon vertices
+#' suitable for [grid::polygonGrob()] or [ggplot2::geom_polygon()]. Two
+#' polygons are produced per input row: one for the upper-value triangle and
+#' one for the lower-value triangle.
 #'
-#' @param data A `biheat_data` table (or data frame with `i`, `j`, `upper`,
-#'   `lower`).
+#' Coordinates follow the display convention, so `y` grows upward: for
+#' `split = "down"` the cell is cut from its top-left to its bottom-right
+#' corner and the upper triangle is the one above that cut.
+#'
+#' @param data A data frame with numeric `x`, `y` (cell centres) and `upper`,
+#'   `lower` (cell values). Optional numeric `width` and `height` columns give
+#'   per-cell footprints; both default to `1`.
 #' @param split One of `"down"` (top-left to bottom-right diagonal) or
 #'   `"up"` (bottom-left to top-right diagonal).
 #' @param inset Numeric in `[0, 0.5)`. Shrinks each cell's footprint by this
-#'   amount on every side, opening a gap between neighbouring cells. `0`
-#'   gives contiguous cells; `0.04` gives an ~8% gap.
+#'   fraction of its width and height on every side, opening a gap between
+#'   neighbouring cells. `0` gives contiguous cells; `0.04` gives an ~8% gap.
 #'
 #' @return A data frame with columns `x`, `y`, `polygon_id`, `which`,
-#'   `value`, `i`, `j`.
+#'   `value`, `.row` (the index of the source row in `data`).
 #'
 #' @keywords internal
 build_triangles <- function(data, split = c("down", "up"), inset = 0) {
@@ -78,31 +83,35 @@ build_triangles <- function(data, split = c("down", "up"), inset = 0) {
     return(data.frame(
       x = numeric(0), y = numeric(0),
       polygon_id = character(0), which = character(0),
-      value = numeric(0), i = integer(0), j = integer(0)
+      value = numeric(0), .row = integer(0)
     ))
   }
 
-  i <- data$i
-  j <- data$j
+  x <- data$x
+  y <- data$y
+  w <- data$width  %||% rep(1, n)
+  h <- data$height %||% rep(1, n)
 
-  half <- 0.5 - inset
-  TL_x <- j - half; TL_y <- i - half
-  TR_x <- j + half; TR_y <- i - half
-  BR_x <- j + half; BR_y <- i + half
-  BL_x <- j - half; BL_y <- i + half
+  half_w <- w / 2 - inset * w
+  half_h <- h / 2 - inset * h
+
+  BL_x <- x - half_w; BL_y <- y - half_h
+  BR_x <- x + half_w; BR_y <- y - half_h
+  TL_x <- x - half_w; TL_y <- y + half_h
+  TR_x <- x + half_w; TR_y <- y + half_h
 
   if (split == "down") {
-    # Diagonal TL <-> BR. Upper triangle is top-right (above diagonal).
+    # Diagonal TL <-> BR. The upper triangle sits above it, on the right.
     upper_x <- rbind(TL_x, TR_x, BR_x)
     upper_y <- rbind(TL_y, TR_y, BR_y)
     lower_x <- rbind(TL_x, BL_x, BR_x)
     lower_y <- rbind(TL_y, BL_y, BR_y)
   } else {
-    # Diagonal BL <-> TR. Upper triangle is top-left (above diagonal).
-    upper_x <- rbind(TL_x, TR_x, BL_x)
-    upper_y <- rbind(TL_y, TR_y, BL_y)
-    lower_x <- rbind(TR_x, BR_x, BL_x)
-    lower_y <- rbind(TR_y, BR_y, BL_y)
+    # Diagonal BL <-> TR. The upper triangle sits above it, on the left.
+    upper_x <- rbind(BL_x, TL_x, TR_x)
+    upper_y <- rbind(BL_y, TL_y, TR_y)
+    lower_x <- rbind(BL_x, BR_x, TR_x)
+    lower_y <- rbind(BL_y, BR_y, TR_y)
   }
 
   upper_df <- data.frame(
@@ -111,8 +120,7 @@ build_triangles <- function(data, split = c("down", "up"), inset = 0) {
     polygon_id = rep(paste0("u_", seq_len(n)), each = 3L),
     which = "upper",
     value = rep(data$upper, each = 3L),
-    i = rep(i, each = 3L),
-    j = rep(j, each = 3L),
+    .row = rep(seq_len(n), each = 3L),
     stringsAsFactors = FALSE
   )
   lower_df <- data.frame(
@@ -121,8 +129,7 @@ build_triangles <- function(data, split = c("down", "up"), inset = 0) {
     polygon_id = rep(paste0("l_", seq_len(n)), each = 3L),
     which = "lower",
     value = rep(data$lower, each = 3L),
-    i = rep(i, each = 3L),
-    j = rep(j, each = 3L),
+    .row = rep(seq_len(n), each = 3L),
     stringsAsFactors = FALSE
   )
 

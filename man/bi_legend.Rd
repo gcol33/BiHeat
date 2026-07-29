@@ -31,8 +31,9 @@ A \code{bi_legend} object (a grid grob).
 \description{
 Creates a standalone legend explaining a \code{\link[=biheat]{biheat()}} plot: two horizontal
 gradient bars (upper and lower triangle palettes) and a small split-tile
-glyph with callouts to "\if{html}{\out{<upper>}} (upper)" / "\if{html}{\out{<lower>}} (lower)". Returns a
-grob you can draw with \code{\link[grid:grid.draw]{grid::grid.draw()}} or compose into another plot.
+glyph whose callouts carry \code{upper_name} and \code{lower_name} alongside the
+side each one is drawn on. Returns a grob you can draw with
+\code{\link[grid:grid.draw]{grid::grid.draw()}} or compose into another plot.
 }
 \details{
 Inside a \code{\link[=biheat]{biheat()}} / \code{\link[=plot.clutch]{plot.clutch()}} call, the same legend is drawn

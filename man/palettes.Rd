@@ -19,7 +19,7 @@ An object of class \code{palettes}: a list with elements \code{upper} and
 Bundles two gradient palettes — one for the upper triangle, one for the
 lower triangle — into a single object you can pass to \code{\link[=biheat]{biheat()}} or
 \code{\link[=incubate]{incubate()}}. Each side is a character vector of two or more colours,
-which \code{\link[scales:pal_gradient_n]{scales::gradient_n_pal()}} interpolates across \verb{[0, 1]}.
+which \code{\link[scales:gradient_n_pal]{scales::gradient_n_pal()}} interpolates across \verb{[0, 1]}.
 }
 \examples{
 palettes(upper = c("white", "darkred"),

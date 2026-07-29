@@ -13,7 +13,7 @@ theme_biheat(
 \item{base_size}{Base font size.}
 
 \item{base}{A ggplot2 theme to inherit from. Defaults to
-\code{\link[ggplot2:ggtheme]{ggplot2::theme_minimal()}}.}
+\code{\link[ggplot2:theme_minimal]{ggplot2::theme_minimal()}}.}
 }
 \value{
 A ggplot2 \code{theme} object.
@@ -21,6 +21,6 @@ A ggplot2 \code{theme} object.
 \description{
 Drops panel grids and backgrounds, lays x labels horizontally on the
 bottom, centres the title block, italicises the caption, and tightens
-margins. Built on top of \code{\link[ggplot2:ggtheme]{ggplot2::theme_minimal()}} — pass a different
+margins. Built on top of \code{\link[ggplot2:theme_minimal]{ggplot2::theme_minimal()}} — pass a different
 base via \code{base} to start from another theme.
 }

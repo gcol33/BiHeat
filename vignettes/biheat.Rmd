@@ -110,9 +110,33 @@ biheat(
 )
 ```
 
-## Status
+## Inside a ggplot
 
-Milestone 2 (this version): full lifecycle (`breed`/`incubate`/`plot`),
-verbs operate on clutch objects, `biheat()` as sugar over the
-lifecycle. Legend composition (split-tile glyph + paired gradient bars)
-and the `geom_biheat()` layer follow in the next milestone.
+`geom_biheat()` draws the same split cells as a layer, from a long data
+frame with one row per cell. Each triangle carries its own gradient, so
+the `fill` scale stays free for whatever else the plot needs.
+
+```{r}
+library(ggplot2)
+
+cells <- expand.grid(site = sites, species = species)
+cells$observed  <- as.vector(t(observed))
+cells$predicted <- as.vector(t(predicted))
+
+ggplot(cells, aes(site, species, upper = observed, lower = predicted)) +
+  geom_biheat() +
+  theme_biheat()
+```
+
+## A legend on its own
+
+`bi_legend()` returns the paired-palette key as a standalone grob: two
+gradient bars and a split tile showing which triangle is which. Use it
+for figures where the panel is assembled separately.
+
+```{r, fig.height = 3}
+grid::grid.draw(
+  bi_legend("observed", "predicted", upper_range = c(0, 1),
+            lower_range = c(0, 1))
+)
+```

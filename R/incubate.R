@@ -84,11 +84,8 @@ incubate <- function(x,
     stop_biheat("`incubate()` expects a clutch (from `breed()`).")
   }
 
-  if (!is.null(palettes) && !inherits(palettes, "palettes")) {
-    palettes <- BiHeat::palettes(upper = palettes,
-                                 lower = lower_palette %||% c("white", "blue"))
-  } else if (!is.null(lower_palette) && is.null(palettes)) {
-    stop_biheat("`lower_palette` was supplied without `palettes`.")
+  if (!is.null(palettes) || !is.null(lower_palette)) {
+    palettes <- as_palettes(palettes, lower_palette)
   }
 
   new_config <- list(
@@ -117,7 +114,7 @@ incubate <- function(x,
   if (!is.null(upper_name)) x$upper_name <- upper_name
   if (!is.null(lower_name)) x$lower_name <- lower_name
 
-  x$config <- modifyList(x$config %||% list(), new_config)
+  x$config <- utils::modifyList(x$config %||% list(), new_config)
   x
 }
 

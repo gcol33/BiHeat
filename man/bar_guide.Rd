@@ -4,7 +4,7 @@
 \alias{bar_guide}
 \title{Build a styled colourbar guide}
 \usage{
-bar_guide(title, direction = c("vertical", "horizontal"))
+bar_guide(title, direction = c("vertical", "horizontal"), order = 0L)
 }
 \description{
 Build a styled colourbar guide

@@ -4,24 +4,34 @@
 \alias{build_triangles}
 \title{Expand cell-level data into triangle polygon coordinates}
 \usage{
-build_triangles(data, split = c("down", "up"))
+build_triangles(data, split = c("down", "up"), inset = 0)
 }
 \arguments{
-\item{data}{A \code{biheat_data} table (or data frame with \code{i}, \code{j}, \code{upper},
-\code{lower}).}
+\item{data}{A data frame with numeric \code{x}, \code{y} (cell centres) and \code{upper},
+\code{lower} (cell values). Optional numeric \code{width} and \code{height} columns give
+per-cell footprints; both default to \code{1}.}
 
 \item{split}{One of \code{"down"} (top-left to bottom-right diagonal) or
 \code{"up"} (bottom-left to top-right diagonal).}
+
+\item{inset}{Numeric in \verb{[0, 0.5)}. Shrinks each cell's footprint by this
+fraction of its width and height on every side, opening a gap between
+neighbouring cells. \code{0} gives contiguous cells; \code{0.04} gives an ~8\% gap.}
 }
 \value{
 A data frame with columns \code{x}, \code{y}, \code{polygon_id}, \code{which},
-\code{value}, \code{i}, \code{j}.
+\code{value}, \code{.row} (the index of the source row in \code{data}).
 }
 \description{
-Internal helper. Given a tidy \code{biheat_data} table with integer \code{i} (row)
-and \code{j} (column) positions, returns a long data frame of polygon vertices
-suitable for \code{\link[ggplot2:geom_polygon]{ggplot2::geom_polygon()}}. Two polygons are produced per
-input row: one for the upper-value triangle and one for the lower-value
-triangle. Cells share a unit-square footprint centered on \verb{(j, i)}.
+Internal helper shared by the clutch renderer and \code{\link[=geom_biheat]{geom_biheat()}}. Given a
+data frame of cell centres, returns a long data frame of polygon vertices
+suitable for \code{\link[grid:polygonGrob]{grid::polygonGrob()}} or \code{\link[ggplot2:geom_polygon]{ggplot2::geom_polygon()}}. Two
+polygons are produced per input row: one for the upper-value triangle and
+one for the lower-value triangle.
+}
+\details{
+Coordinates follow the display convention, so \code{y} grows upward: for
+\code{split = "down"} the cell is cut from its top-left to its bottom-right
+corner and the upper triangle is the one above that cut.
 }
 \keyword{internal}

@@ -9,7 +9,7 @@ render_clutch(x)
 \description{
 Internal renderer. Reads \code{x$config}, fills any unset slot from
 \code{\link[=clutch_defaults]{clutch_defaults()}}, validates enum values, and builds a ggplot with
-two fill scales (one per triangle) via \code{\link[ggnewscale:new_scale]{ggnewscale::new_scale_fill()}}.
+two fill scales (one per triangle) via \code{\link[ggnewscale:new_scale_fill]{ggnewscale::new_scale_fill()}}.
 Returns a \code{biheat_plot} object: a gtable that wraps the ggplot grob plus
 the optional split-tile key glyph injected into the legend column.
 }

@@ -2,8 +2,9 @@
 #'
 #' Creates a standalone legend explaining a [biheat()] plot: two horizontal
 #' gradient bars (upper and lower triangle palettes) and a small split-tile
-#' glyph with callouts to "<upper> (upper)" / "<lower> (lower)". Returns a
-#' grob you can draw with [grid::grid.draw()] or compose into another plot.
+#' glyph whose callouts carry `upper_name` and `lower_name` alongside the
+#' side each one is drawn on. Returns a grob you can draw with
+#' [grid::grid.draw()] or compose into another plot.
 #'
 #' Inside a [biheat()] / [plot.clutch()] call, the same legend is drawn
 #' automatically next to the panel. Use this function when you want the
@@ -34,10 +35,8 @@ bi_legend <- function(upper_name    = "A",
                       split         = c("down", "up")) {
   split <- match.arg(split)
 
-  stopifnot(
-    is.numeric(upper_range), length(upper_range) == 2L,
-    is.numeric(lower_range), length(lower_range) == 2L
-  )
+  check_range(upper_range, "upper_range")
+  check_range(lower_range, "lower_range")
 
   bar_upper <- bar_grob(upper_name, upper_palette, upper_range, y_top = 0.95)
   bar_lower <- bar_grob(lower_name, lower_palette, lower_range, y_top = 0.65)

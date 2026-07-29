@@ -75,6 +75,8 @@ clutch
 | `straighten()`   | Flip the diagonal direction                     |
 | `bothways()`     | Toggle separate / shared colour scales          |
 | `comes_out()`    | Pull the tidy data back out                     |
+| `geom_biheat()`  | Draw split cells as a ggplot2 layer             |
+| `bi_legend()`    | Paired-palette legend as a standalone grob      |
 | `palettes()`     | Bundle paired gradient palettes                 |
 | `theme_biheat()` | Minimal heatmap theme                           |
 
@@ -104,12 +106,26 @@ breed(observed, predicted) |>
 remotes::install_github("gcol33/BiHeat")
 ```
 
+## Inside a ggplot
+
+`geom_biheat()` draws the same split cells as a layer, from a long data frame with
+one row per cell. Each triangle carries its own gradient, so the `fill` scale stays
+free for the rest of the plot.
+
+```r
+library(ggplot2)
+
+ggplot(cells, aes(site, species, upper = observed, lower = predicted)) +
+  geom_biheat() +
+  theme_biheat()
+```
+
+`bi_legend()` returns the paired-palette key as a standalone grob for figures where
+the panel is assembled separately.
+
 ## Documentation
 
 - [Getting started](https://github.com/gcol33/BiHeat/blob/main/vignettes/biheat.Rmd)
-
-`geom_biheat()` and the full split-tile legend are reserved in the API and land in
-a later milestone.
 
 ## License
 

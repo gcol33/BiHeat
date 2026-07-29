@@ -2,6 +2,7 @@
 % Please edit documentation in R/geom-biheat.R
 \name{geom_biheat}
 \alias{geom_biheat}
+\alias{GeomBiheat}
 \title{ggplot2 layer for diagonally split heatmap cells}
 \usage{
 geom_biheat(
@@ -11,45 +12,75 @@ geom_biheat(
   position = "identity",
   ...,
   split = c("down", "up"),
-  grid_colour = "white",
-  grid_linewidth = 0.4,
+  palettes = NULL,
+  lower_palette = NULL,
+  upper_range = NULL,
+  lower_range = NULL,
+  cell_inset = 0.04,
   na_colour = "grey90",
   show.legend = NA,
   inherit.aes = TRUE
 )
 }
 \arguments{
-\item{mapping}{Aesthetic mapping. Expected aesthetics are \code{x}, \code{y},
-\code{upper}, \code{lower}.}
+\item{mapping}{Aesthetic mapping. Required aesthetics are \code{x}, \code{y},
+\code{upper}, \code{lower}; \code{width}, \code{height}, \code{colour}, \code{linewidth}, \code{linetype}
+and \code{alpha} are optional.}
 
-\item{data}{Long data frame.}
+\item{data}{Long data frame, one row per cell.}
 
 \item{stat, position}{Standard ggplot2 layer arguments.}
 
-\item{...}{Other arguments passed on to the layer (e.g. \code{colour},
-\code{linewidth}).}
+\item{...}{Other arguments passed on to \code{\link[ggplot2:layer]{ggplot2::layer()}}, including
+fixed aesthetics such as \code{colour} or \code{linewidth}.}
 
-\item{split}{\code{"down"} or \code{"up"}.}
+\item{split}{\code{"down"} (top-left to bottom-right diagonal) or \code{"up"}.}
 
-\item{grid_colour}{Colour of cell / triangle borders.}
+\item{palettes}{A \code{\link[=palettes]{palettes()}} object, or a character vector of upper
+colours paired with \code{lower_palette}. Defaults to white-to-red over
+white-to-blue.}
 
-\item{grid_linewidth}{Border width.}
+\item{lower_palette}{Optional companion to a bare \code{palettes} vector.}
+
+\item{upper_range, lower_range}{Numeric length-2 value ranges the palettes
+are stretched across. Default to the range of the data in each triangle.
+Pass the same value to both for a shared scale.}
+
+\item{cell_inset}{Numeric in \verb{[0, 0.5)}. Shrinks each cell on every side to
+leave a gap between neighbours.}
 
 \item{na_colour}{Fill for \code{NA} values.}
 
 \item{show.legend, inherit.aes}{Standard ggplot2 layer arguments.}
 }
 \value{
-A ggplot2 layer (once implemented).
+A ggplot2 layer.
 }
 \description{
-A direct-to-ggplot interface for the same rendering \code{\link[=biheat]{biheat()}} performs.
-Expects a long data frame with one row per cell and \code{upper} / \code{lower}
-aesthetics.
+A direct-to-ggplot interface for the drawing \code{\link[=biheat]{biheat()}} performs. Expects
+a long data frame with one row per cell and \code{upper} / \code{lower} aesthetics
+holding the two values. Each cell is drawn as two triangles: \code{upper} above
+the diagonal, \code{lower} below it.
 }
 \details{
-Stubbed in this milestone — calling it surfaces a clear "not yet
-implemented" message so the API is reserved without pretending the
-rendering works. A full ggproto \code{GeomBiheat} lands in a later milestone
-(step 8 in the roadmap).
+The layer carries its own pair of gradient palettes and maps values to
+colours itself, so the two triangles keep independent colour ranges inside
+a single ggplot. Neither side consumes the \code{fill} scale, which leaves it
+free for other layers. Add a key with \code{\link[=bi_legend]{bi_legend()}}, or use \code{\link[=biheat]{biheat()}} when
+you want the legend built for you.
+}
+\examples{
+set.seed(1)
+cells <- expand.grid(site = letters[1:5], species = LETTERS[1:4])
+cells$observed  <- runif(20)
+cells$predicted <- runif(20)
+
+library(ggplot2)
+ggplot(cells, aes(site, species, upper = observed, lower = predicted)) +
+  geom_biheat() +
+  theme_biheat()
+
+}
+\seealso{
+\code{\link[=biheat]{biheat()}}, \code{\link[=bi_legend]{bi_legend()}}
 }

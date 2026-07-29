@@ -40,8 +40,24 @@ print.palettes <- function(x, ...) {
 }
 
 #' Resolve user palette input into a `palettes` object
+#'
+#' Accepts what the user-facing entry points accept: a `palettes` object, a
+#' bare vector of upper colours optionally paired with `lower_palette`, or
+#' `NULL` for the defaults.
+#'
 #' @keywords internal
-resolve_palettes <- function(upper_palette, lower_palette) {
-  if (inherits(upper_palette, "palettes")) return(upper_palette)
-  palettes(upper = upper_palette, lower = lower_palette)
+as_palettes <- function(x, lower_palette = NULL) {
+  if (is.null(x)) {
+    if (!is.null(lower_palette)) {
+      stop_biheat("`lower_palette` was supplied without `palettes`.")
+    }
+    return(palettes())
+  }
+  if (inherits(x, "palettes")) {
+    if (!is.null(lower_palette)) {
+      stop_biheat("`lower_palette` cannot be combined with a `palettes` object.")
+    }
+    return(x)
+  }
+  palettes(upper = x, lower = lower_palette %||% palettes()$lower)
 }

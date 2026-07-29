@@ -16,6 +16,7 @@ incubate(
   value_size = NULL,
   grid_colour = NULL,
   grid_linewidth = NULL,
+  cell_inset = NULL,
   na_colour = NULL,
   row_order = NULL,
   col_order = NULL,
@@ -53,6 +54,10 @@ share a single value range.}
 \item{grid_colour}{Colour of the grid between triangles / cells.}
 
 \item{grid_linewidth}{Width of grid lines.}
+
+\item{cell_inset}{Numeric in \verb{[0, 0.5)}. Shrinks each cell on every side
+to leave a thin gap between neighbouring cells. Default \code{0.04}. Pass
+\code{0} for contiguous cells.}
 
 \item{na_colour}{Fill for \code{NA} cells.}
 

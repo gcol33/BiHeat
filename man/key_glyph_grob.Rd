@@ -15,6 +15,7 @@ key_glyph_grob(
 \description{
 Returns a grid grob: a small split square with the upper triangle in the
 upper palette and the lower triangle in the lower palette, plus two
-callout lines to labels "\if{html}{\out{<upper>}} (upper)" / "\if{html}{\out{<lower>}} (lower)".
+callout lines running to \code{upper_name} and \code{lower_name}, each tagged with
+the side it labels.
 }
 \keyword{internal}
