@@ -99,7 +99,14 @@ bar_grob <- function(title, palette, range, y_top = 0.95,
     gp = grid::gpar(col = "grey25", lwd = 0.6)
   )
   mid <- mean(range)
-  labels <- format(c(range[1], mid, range[2]), digits = 3)
+  # Round first, then format each tick on its own. Formatting the three
+  # together stretches every label to the decimals the smallest one needs,
+  # and a common width would push the centred labels off their ticks.
+  labels <- vapply(
+    signif(c(range[1], mid, range[2]), 3),
+    function(v) format(v, trim = TRUE),
+    character(1L)
+  )
   label_g <- grid::textGrob(
     labels,
     x = ticks_x, y = ticks_y - 0.03, hjust = 0.5, vjust = 1,

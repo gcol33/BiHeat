@@ -55,9 +55,8 @@ render_clutch <- function(x) {
   upper_axis <- nice_axis(upper_rng)
   lower_axis <- nice_axis(lower_rng)
 
-  guide_dir <- if (legend_orientation == "horizontal") "horizontal" else "vertical"
-  upper_guide <- bar_guide(sprintf("%s (upper triangle)", x$upper_name), guide_dir, order = 1L)
-  lower_guide <- bar_guide(sprintf("%s (lower triangle)", x$lower_name), guide_dir, order = 2L)
+  upper_guide <- bar_guide(sprintf("%s (upper triangle)", x$upper_name), order = 1L)
+  lower_guide <- bar_guide(sprintf("%s (lower triangle)", x$lower_name), order = 2L)
 
   grid_colour <- cfg$grid_colour
   if (is.null(grid_colour)) grid_colour <- NA
@@ -112,7 +111,12 @@ render_clutch <- function(x) {
       expand = ggplot2::expansion(add = 0.5 - inset / 2)
     ) +
     theme_biheat() +
-    ggplot2::theme(legend.position = legend_position) +
+    ggplot2::theme(
+      legend.position = legend_position,
+      legend.box      = legend_orientation,
+      axis.title.x    = axis_title_element(cfg$xlab, "x"),
+      axis.title.y    = axis_title_element(cfg$ylab, "y")
+    ) +
     ggplot2::labs(
       x        = cfg$xlab,
       y        = cfg$ylab,
@@ -154,10 +158,26 @@ render_clutch <- function(x) {
   p
 }
 
+#' Axis title element for an optional label
+#'
+#' [theme_biheat()] blanks both axis titles, since a heatmap's tick labels
+#' usually name the axis on their own. A label supplied through
+#' [incubate()] has to switch its own title back on.
+#'
+#' @keywords internal
+axis_title_element <- function(label, axis = c("x", "y")) {
+  axis <- match.arg(axis)
+  if (is.null(label)) return(ggplot2::element_blank())
+  if (axis == "x") {
+    ggplot2::element_text(margin = ggplot2::margin(t = 6))
+  } else {
+    ggplot2::element_text(angle = 90, margin = ggplot2::margin(r = 6))
+  }
+}
+
 #' Build a styled colourbar guide
 #' @keywords internal
-bar_guide <- function(title, direction = c("vertical", "horizontal"), order = 0L) {
-  direction <- match.arg(direction)
+bar_guide <- function(title, order = 0L) {
   ggplot2::guide_colourbar(
     title           = title,
     title.position  = "top",
@@ -210,9 +230,19 @@ nice_axis <- function(rng) {
 inject_key_glyph <- function(p, spec) {
   g <- ggplot2::ggplotGrob(p)
 
-  guide_idx <- which(g$layout$name == "guide-box-right")
-  if (length(guide_idx) == 0L) {
-    guide_idx <- which(g$layout$name == "guide-box")
+  # ggplot2 lays out one guide-box cell per side and fills the unused ones
+  # with zeroGrobs, so match on the cell that actually holds a gtable.
+  guide_idx <- which(g$layout$name %in% c(
+    "guide-box-right", "guide-box-bottom",
+    "guide-box-left", "guide-box-top", "guide-box"
+  ))
+  if (length(guide_idx) > 0L) {
+    holds_guides <- vapply(
+      guide_idx,
+      function(i) inherits(g$grobs[[i]], "gtable"),
+      logical(1L)
+    )
+    guide_idx <- guide_idx[holds_guides]
   }
   if (length(guide_idx) == 0L) {
     class(g) <- c("biheat_plot", class(g))
@@ -264,10 +294,37 @@ inject_key_glyph <- function(p, spec) {
     )
     guide_box <- resize_to_content(guide_box)
     g$grobs[[guide_idx[1]]] <- guide_box
+    g <- grow_row_to_fit(g, guide_idx[1], guide_box)
   }
 
   class(g) <- c("biheat_plot", class(g))
   attr(g, "clutch_spec") <- spec
+  g
+}
+
+#' Grow the layout row holding a guide box to the box's new height
+#'
+#' A guide box below the panel occupies a row sized for the guides it held
+#' when the plot was built. The key glyph adds rows after that measurement,
+#' and the surplus is drawn outside the row and clipped. Widening the row to
+#' the box's current height lets the glyph land inside the figure. A guide box
+#' beside the panel grows along the axis its row does not constrain, so it is
+#' left alone.
+#'
+#' @keywords internal
+grow_row_to_fit <- function(g, idx, guide_box) {
+  if (!grepl("bottom|top", g$layout$name[idx])) return(g)
+  row <- g$layout$t[idx]
+  needed <- tryCatch(
+    grid::convertHeight(sum(guide_box$heights), "cm", valueOnly = TRUE),
+    error = function(e) NA_real_
+  )
+  if (is.na(needed)) return(g)
+  current <- tryCatch(
+    grid::convertHeight(g$heights[row], "cm", valueOnly = TRUE),
+    error = function(e) 0
+  )
+  if (needed > current) g$heights[row] <- grid::unit(needed, "cm")
   g
 }
 

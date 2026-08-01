@@ -15,7 +15,8 @@
 pass before drawing.}
 }
 \value{
-A ggplot object.
+A \code{biheat_plot} gtable, or the underlying ggplot when no key glyph
+is drawn (\code{legend_position = "none"} or \code{show_key = FALSE}).
 }
 \description{
 Renders a \code{\link[=breed]{breed()}}ed clutch as a diagonally split heatmap. Reads any

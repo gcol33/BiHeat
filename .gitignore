@@ -5,6 +5,5 @@
 *.Rproj
 *.tar.gz
 Rplots.pdf
-docs/
 inst/doc/
 *.Rcheck/

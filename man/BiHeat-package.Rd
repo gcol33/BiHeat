@@ -12,6 +12,7 @@ Visualizes two numeric matrices of identical shape in a single heatmap by splitt
 Useful links:
 \itemize{
   \item \url{https://github.com/gcol33/BiHeat}
+  \item \url{https://gillescolling.com/BiHeat/}
   \item Report bugs at \url{https://github.com/gcol33/BiHeat/issues}
 }
 

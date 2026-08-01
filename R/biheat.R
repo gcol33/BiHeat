@@ -35,7 +35,10 @@
 #'   `na_colour`, `row_order`, `col_order`, `xlab`, `ylab`, `title`,
 #'   `upper_name`, `lower_name`.
 #'
-#' @return A ggplot object.
+#' @return A `biheat_plot`: a gtable carrying the panel and the paired
+#'   legend, which prints like any other plot. With `legend_position = "none"`
+#'   or `show_key = FALSE` there is no key glyph to inject, and the return is
+#'   the underlying ggplot object.
 #'
 #' @examples
 #' set.seed(1)

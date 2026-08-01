@@ -19,7 +19,10 @@ biheat(upper, lower, ...)
 \code{upper_name}, \code{lower_name}.}
 }
 \value{
-A ggplot object.
+A \code{biheat_plot}: a gtable carrying the panel and the paired
+legend, which prints like any other plot. With \code{legend_position = "none"}
+or \code{show_key = FALSE} there is no key glyph to inject, and the return is
+the underlying ggplot object.
 }
 \description{
 Draws a heatmap where each cell is split along a diagonal: the upper

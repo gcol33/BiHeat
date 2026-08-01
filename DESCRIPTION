@@ -33,6 +33,6 @@ Suggests:
     vdiffr
 Config/testthat/edition: 3
 VignetteBuilder: knitr
-URL: https://github.com/gcol33/BiHeat
+URL: https://github.com/gcol33/BiHeat, https://gillescolling.com/BiHeat/
 BugReports: https://github.com/gcol33/BiHeat/issues
 Config/roxygen2/version: 8.0.0

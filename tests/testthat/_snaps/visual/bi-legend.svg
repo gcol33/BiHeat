@@ -23,17 +23,17 @@
 <line x1='36.00' y1='80.64' x2='36.00' y2='86.40' style='stroke-width: 0.45; stroke: #404040;' />
 <line x1='288.00' y1='80.64' x2='288.00' y2='86.40' style='stroke-width: 0.45; stroke: #404040;' />
 <line x1='540.00' y1='80.64' x2='540.00' y2='86.40' style='stroke-width: 0.45; stroke: #404040;' />
-<text x='36.00' y='103.43' text-anchor='middle' style='font-size: 8.00px; fill: #333333; font-family: sans;' textLength='11.12px' lengthAdjust='spacingAndGlyphs'>0.0</text>
+<text x='36.00' y='103.43' text-anchor='middle' style='font-size: 8.00px; fill: #333333; font-family: sans;' textLength='4.45px' lengthAdjust='spacingAndGlyphs'>0</text>
 <text x='288.00' y='103.43' text-anchor='middle' style='font-size: 8.00px; fill: #333333; font-family: sans;' textLength='11.12px' lengthAdjust='spacingAndGlyphs'>0.5</text>
-<text x='540.00' y='103.43' text-anchor='middle' style='font-size: 8.00px; fill: #333333; font-family: sans;' textLength='11.12px' lengthAdjust='spacingAndGlyphs'>1.0</text>
+<text x='540.00' y='103.43' text-anchor='middle' style='font-size: 8.00px; fill: #333333; font-family: sans;' textLength='4.45px' lengthAdjust='spacingAndGlyphs'>1</text>
 <text x='36.00' y='205.04' style='font-size: 10.00px; font-weight: bold; font-family: sans;' textLength='41.14px' lengthAdjust='spacingAndGlyphs'>predicted</text>
 <image width='504.00' height='28.80' x='36.00' y='224.64' preserveAspectRatio='none' xlink:href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAYAAAAxWXB3AAAAgUlEQVQ4jZWQwQ7DMAhDX///f6epK/YunbomkKSHCLCNjbLZtg0YukqBzyrPdp7k2EDhn+5Rc6t3r96c9kz4IrvymmqSzJHXyK/9v5QfeHVzcn+qnWS68RzyiX5ZO3kqPPWv033O+haTer7FpQsPXVj86tnH2R+CI+ATsAveAS/BFwibrw+tx+BlAAAAAElFTkSuQmCC'/>
 <line x1='36.00' y1='253.44' x2='36.00' y2='259.20' style='stroke-width: 0.45; stroke: #404040;' />
 <line x1='288.00' y1='253.44' x2='288.00' y2='259.20' style='stroke-width: 0.45; stroke: #404040;' />
 <line x1='540.00' y1='253.44' x2='540.00' y2='259.20' style='stroke-width: 0.45; stroke: #404040;' />
 <text x='36.00' y='276.23' text-anchor='middle' style='font-size: 8.00px; fill: #333333; font-family: sans;' textLength='7.11px' lengthAdjust='spacingAndGlyphs'>-1</text>
-<text x='288.00' y='276.23' text-anchor='middle' style='font-size: 8.00px; fill: #333333; font-family: sans;' textLength='6.67px' lengthAdjust='spacingAndGlyphs'> 0</text>
-<text x='540.00' y='276.23' text-anchor='middle' style='font-size: 8.00px; fill: #333333; font-family: sans;' textLength='6.67px' lengthAdjust='spacingAndGlyphs'> 1</text>
+<text x='288.00' y='276.23' text-anchor='middle' style='font-size: 8.00px; fill: #333333; font-family: sans;' textLength='4.45px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='540.00' y='276.23' text-anchor='middle' style='font-size: 8.00px; fill: #333333; font-family: sans;' textLength='4.45px' lengthAdjust='spacingAndGlyphs'>1</text>
 <polygon points='7.09,471.88 42.52,471.88 42.52,507.32 ' style='stroke-width: 0.60; stroke: #FFFFFF; fill: #FF3E22;' />
 <polygon points='7.09,471.88 7.09,507.32 42.52,507.32 ' style='stroke-width: 0.60; stroke: #FFFFFF; fill: #502BFF;' />
 <line x1='31.89' y1='479.68' x2='55.28' y2='475.43' style='stroke-width: 0.45; stroke: #4D4D4D;' />

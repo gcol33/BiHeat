@@ -223,7 +223,8 @@ print.clutch <- function(x, ...) {
 #' @param ... Additional rendering options. Treated as a final [incubate()]
 #'   pass before drawing.
 #'
-#' @return A ggplot object.
+#' @return A `biheat_plot` gtable, or the underlying ggplot when no key glyph
+#'   is drawn (`legend_position = "none"` or `show_key = FALSE`).
 #' @export
 plot.clutch <- function(x, y, ...) {
   extras <- list(...)

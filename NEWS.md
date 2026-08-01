@@ -14,3 +14,6 @@ First release.
 * `bi_legend()` returns the paired-palette key as a standalone grob.
 * `palettes()` bundles a pair of gradient palettes; `theme_biheat()` supplies
   a minimal heatmap theme.
+* Three vignettes: `vignette("biheat")` for the clutch, alignment, and the
+  lifecycle, `vignette("styling")` for the rendering options, and
+  `vignette("geom-biheat")` for the ggplot2 layer.

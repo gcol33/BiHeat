@@ -91,6 +91,56 @@ test_that("the key glyph is injected into the guide box", {
   expect_true("biheat-key" %in% guide_box$layout$name)
 })
 
+test_that("the key glyph reaches a legend placed below the panel", {
+  u <- matrix(1:4, 2, 2)
+  p <- plot(breed(u, u), legend_position = "bottom")
+  expect_s3_class(p, "biheat_plot")
+
+  guide_idx <- which(p$layout$name == "guide-box-bottom")
+  expect_true(length(guide_idx) > 0)
+  guide_box <- p$grobs[[guide_idx[1]]]
+  expect_true("biheat-key" %in% guide_box$layout$name)
+})
+
+test_that("a bottom guide box gets a row tall enough to hold the key", {
+  u <- matrix(1:4, 2, 2)
+  p <- plot(breed(u, u), legend_position = "bottom")
+
+  idx <- which(p$layout$name == "guide-box-bottom")[1]
+  row_height <- grid::convertHeight(p$heights[p$layout$t[idx]], "cm",
+                                    valueOnly = TRUE)
+  box_height <- grid::convertHeight(sum(p$grobs[[idx]]$heights), "cm",
+                                    valueOnly = TRUE)
+  expect_gte(row_height, box_height - 1e-6)
+})
+
+test_that("legend_orientation sets how the two colourbars stack", {
+  u <- matrix(1:4, 2, 2)
+
+  vertical <- plot(breed(u, u), legend_orientation = "vertical",
+                   show_key = FALSE)
+  horizontal <- plot(breed(u, u), legend_orientation = "horizontal",
+                     show_key = FALSE)
+
+  expect_equal(vertical$theme$legend.box, "vertical")
+  expect_equal(horizontal$theme$legend.box, "horizontal")
+})
+
+test_that("axis titles appear only when a label was supplied", {
+  u <- matrix(1:4, 2, 2)
+
+  bare <- plot(breed(u, u), show_key = FALSE)
+  expect_s3_class(bare$theme$axis.title.x, "element_blank")
+  expect_s3_class(bare$theme$axis.title.y, "element_blank")
+
+  labelled <- plot(breed(u, u), xlab = "site", ylab = "species",
+                   show_key = FALSE)
+  expect_s3_class(labelled$theme$axis.title.x, "element_text")
+  expect_s3_class(labelled$theme$axis.title.y, "element_text")
+  expect_equal(labelled$labels$x, "site")
+  expect_equal(labelled$labels$y, "species")
+})
+
 test_that("print.biheat_plot draws and returns invisibly", {
   u <- matrix(1:4, 2, 2)
   p <- plot(breed(u, u))
