@@ -22,6 +22,15 @@ a split cell through a custom `cell_fun`, alongside its clustering and annotatio
 machinery. BiHeat splits each individual cell, gives each half its own gradient, and
 takes two plain matrices.
 
+## Installation
+
+```r
+# install.packages("remotes")
+remotes::install_github("gcol33/BiHeat")
+```
+
+## Quick start
+
 ```r
 library(BiHeat)
 
@@ -108,13 +117,6 @@ breed(observed, predicted) |>
 - `scale = "shared"` puts both triangles on a common range, so cross-triangle
   comparisons are meaningful. Use it when the matrices are directly comparable
   (observed vs. predicted in the same units, model A vs. model B accuracy).
-
-## Installation
-
-```r
-# install.packages("remotes")
-remotes::install_github("gcol33/BiHeat")
-```
 
 ## Inside a ggplot
 

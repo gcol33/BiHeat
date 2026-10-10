@@ -17,6 +17,13 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Installation
+
+```{r, eval = FALSE}
+# install.packages("remotes")
+remotes::install_github("gcol33/BiHeat")
+```
+
 ```{r}
 library(BiHeat)
 ```
