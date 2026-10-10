@@ -84,11 +84,21 @@
 <div class="page-header"><h1 id="biheat">BiHeat<a class="anchor" aria-label="anchor" href="#biheat"></a>
 </h1></div>
 <p><em>two matrices in one heatmap</em></p>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a> <a href="https://github.com/gcol33/BiHeat/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/gcol33/BiHeat/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://opensource.org/licenses/MIT" class="external-link"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a></p>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a> <a href="https://github.com/gcol33/BiHeat/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/gcol33/BiHeat/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://app.codecov.io/gh/gcol33/BiHeat" class="external-link"><img src="https://codecov.io/gh/gcol33/BiHeat/graph/badge.svg" alt="Codecov test coverage"></a> <a href="https://opensource.org/licenses/MIT" class="external-link"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a></p>
 <p><strong>Diagonally split heatmap cells: the upper triangle encodes one matrix, the lower triangle encodes the other.</strong></p>
 <p><code>BiHeat</code> draws two matrices of the same shape in a single heatmap by cutting every cell along a diagonal. One value goes in the upper triangle, the other in the lower, built on <code>ggplot2</code>. The comparison lives inside one cell, at the resolution of a single row and column, so the eye stays in one place.</p>
 <p>Neighbours worth knowing: <a href="https://cran.r-project.org/package=corrplot" class="external-link">corrplot</a> has <code>corrplot.mixed()</code>, which draws one display above the matrix diagonal and another below it, for correlation matrices. <a href="https://bioconductor.org/packages/ComplexHeatmap/" class="external-link">ComplexHeatmap</a> reaches a split cell through a custom <code>cell_fun</code>, alongside its clustering and annotation machinery. BiHeat splits each individual cell, gives each half its own gradient, and takes two plain matrices.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"gcol33/BiHeat"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
+</h2>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gcol33/BiHeat" class="external-link">BiHeat</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
@@ -101,11 +111,12 @@
 <span><span class="fu"><a href="reference/biheat.html">biheat</a></span><span class="op">(</span><span class="va">observed</span>, <span class="va">predicted</span><span class="op">)</span></span></code></pre></div>
 <p>Upper triangle is <code>observed</code> (white to red), lower triangle is <code>predicted</code> (white to blue). Where the two disagree, the split is visible.</p>
 <p>Two matrices of the same shape come up constantly: observed vs. predicted, mean vs. variance, correlation vs. significance, train vs. test, model A vs. model B, before vs. after. All of them fit one BiHeat plot.</p>
+</div>
 <div class="section level2">
 <h2 id="one-call-or-three-stages">One call or three stages<a class="anchor" aria-label="anchor" href="#one-call-or-three-stages"></a>
 </h2>
 <p><code><a href="reference/biheat.html">biheat()</a></code> is the one-shot entry point. It is exactly equivalent to the three-stage lifecycle below, so use whichever reads better in context:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># one-shot</span></span>
 <span><span class="fu"><a href="reference/biheat.html">biheat</a></span><span class="op">(</span><span class="va">observed</span>, <span class="va">predicted</span>, scale <span class="op">=</span> <span class="st">"shared"</span>, split <span class="op">=</span> <span class="st">"up"</span><span class="op">)</span></span>
 <span></span>
@@ -114,7 +125,7 @@
 <span>  <span class="fu"><a href="reference/incubate.html">incubate</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="st">"shared"</span>, split <span class="op">=</span> <span class="st">"up"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="reference/breed.html">breed()</a></code> pairs the two matrices into a <strong>clutch</strong> and aligns them on overlapping row and column names, then computes Pearson and Spearman correlation, RMSE, MAE, and NA counts. <code><a href="reference/incubate.html">incubate()</a></code> layers on rendering options (additive, the way <code>ggplot2</code>’s <code>+</code> is). <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> draws.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">clutch</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/breed.html">breed</a></span><span class="op">(</span><span class="va">observed</span>, <span class="va">predicted</span><span class="op">)</span></span>
 <span><span class="va">clutch</span></span>
 <span><span class="co">#&gt; &lt;clutch&gt;</span></span>
@@ -184,7 +195,7 @@
 </tbody>
 </table>
 <p>The verbs go clutch-in, clutch-out, so they chain:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/breed.html">breed</a></span><span class="op">(</span><span class="va">observed</span>, <span class="va">predicted</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/switch_sides.html">switch_sides</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span>   <span class="co"># swap which matrix is on top</span></span>
 <span>  <span class="fu"><a href="reference/straighten.html">straighten</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span>     <span class="co"># flip the diagonal</span></span>
@@ -200,13 +211,6 @@
 <li>
 <code>scale = "shared"</code> puts both triangles on a common range, so cross-triangle comparisons are meaningful. Use it when the matrices are directly comparable (observed vs. predicted in the same units, model A vs. model B accuracy).</li>
 </ul>
-</div>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"gcol33/BiHeat"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="inside-a-ggplot">Inside a ggplot<a class="anchor" aria-label="anchor" href="#inside-a-ggplot"></a>
