@@ -1,5 +1,13 @@
 # Getting started with BiHeat
 
+## Installation
+
+``` r
+
+# install.packages("remotes")
+remotes::install_github("gcol33/BiHeat")
+```
+
 ``` r
 
 library(BiHeat)
@@ -26,7 +34,7 @@ predicted <- observed + matrix(rnorm(48, sd = 0.15), 6, 8,
 biheat(observed, predicted)
 ```
 
-![](biheat_files/figure-html/unnamed-chunk-2-1.svg)
+![](biheat_files/figure-html/unnamed-chunk-3-1.svg)
 
 Each cell holds both numbers at once. A cell whose two halves are
 similarly pale, or similarly saturated, is a cell where the model agreed
@@ -78,7 +86,7 @@ support one direction of comparison.
 biheat(observed, predicted, split = "up")
 ```
 
-![](biheat_files/figure-html/unnamed-chunk-3-1.svg)
+![](biheat_files/figure-html/unnamed-chunk-4-1.svg)
 
 ## The clutch
 
@@ -294,7 +302,7 @@ in the panel:
 plot(gappy, na_colour = "grey85")
 ```
 
-![](biheat_files/figure-html/unnamed-chunk-16-1.svg)
+![](biheat_files/figure-html/unnamed-chunk-17-1.svg)
 
 ## Separate and shared colour scales
 
@@ -319,7 +327,7 @@ dimnames(pmat) <- dimnames(cmat)
 biheat(cmat, pmat, upper_name = "correlation", lower_name = "p-value")
 ```
 
-![](biheat_files/figure-html/unnamed-chunk-17-1.svg)
+![](biheat_files/figure-html/unnamed-chunk-18-1.svg)
 
 `scale = "shared"` puts both triangles on one range, which is what makes
 a cross-triangle comparison mean something. Observed against predicted
@@ -330,7 +338,7 @@ qualifies, since both are probabilities in the same units:
 biheat(observed, predicted, scale = "shared")
 ```
 
-![](biheat_files/figure-html/unnamed-chunk-18-1.svg)
+![](biheat_files/figure-html/unnamed-chunk-19-1.svg)
 
 The choice changes the reading of the same data. Under `"separate"`,
 each side is stretched across its own minimum and maximum, so a pale
@@ -353,7 +361,7 @@ breed(observed, predicted) |>
   plot()
 ```
 
-![](biheat_files/figure-html/unnamed-chunk-19-1.svg)
+![](biheat_files/figure-html/unnamed-chunk-20-1.svg)
 
 [`incubate()`](https://gillescolling.com/BiHeat/reference/incubate.md)
 records rendering options on the clutch and hands it back, so calls
@@ -369,7 +377,7 @@ breed(observed, predicted) |>
   plot()
 ```
 
-![](biheat_files/figure-html/unnamed-chunk-20-1.svg)
+![](biheat_files/figure-html/unnamed-chunk-21-1.svg)
 
 Options are stored, not validated on the spot, so a partial
 configuration is allowed to exist. Validation happens when
@@ -434,7 +442,7 @@ breed(observed, predicted) |>
   plot()
 ```
 
-![](biheat_files/figure-html/unnamed-chunk-24-1.svg)
+![](biheat_files/figure-html/unnamed-chunk-25-1.svg)
 
 `predicted` is now on top, the diagonal runs the other way, and the
 scale is shared. Each verb reads the current state and moves it one
@@ -542,7 +550,7 @@ biheat(observed, predicted,
        caption = "48 cells, 6 species x 8 sites")
 ```
 
-![](biheat_files/figure-html/unnamed-chunk-31-1.svg)
+![](biheat_files/figure-html/unnamed-chunk-32-1.svg)
 
 Turning the key glyph off leaves nothing to inject, and the underlying
 ggplot comes back instead. That object does take `+`:
@@ -557,7 +565,7 @@ class(p_gg)
 p_gg + ggplot2::theme(legend.position = "bottom")
 ```
 
-![](biheat_files/figure-html/unnamed-chunk-32-1.svg)
+![](biheat_files/figure-html/unnamed-chunk-33-1.svg)
 
 ## Sizing the panel
 

@@ -3,15 +3,24 @@
 <g class='svglite'>
 <defs>
   <style type='text/css'><![CDATA[
-    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+    /* theme-aware-processed */
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite circle {
       fill: none;
-      stroke: #000000;
+      stroke: #3E3F3A;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite > g > rect {
+      fill: none;
+      stroke: #3E3F3A;
       stroke-linecap: round;
       stroke-linejoin: round;
       stroke-miterlimit: 10.00;
     }
     .svglite text {
       white-space: pre;
+      fill: #3E3F3A;
     }
     .svglite g.glyphgroup path {
       fill: inherit;
@@ -26,7 +35,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMC4wMHw0MzIuMDB8MC4wMHwyODguMDA=)'>
-<rect x='0.00' y='0.00' width='432.00' height='288.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+<rect rx='4' x='0.00' y='0.00' width='432.00' height='288.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #F5F6F8;' />
 </g>
 <defs>
   <clipPath id='cpMTcuOTl8NDE4LjA1fDcuOTd8MjY4LjMw'>
@@ -60,7 +69,7 @@
 <polygon points='171.18,210.70 216.07,210.70 216.07,246.98 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE9E1;' />
 <polygon points='219.97,13.49 264.86,13.49 264.86,49.78 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFCDBC;' />
 <polygon points='219.97,52.93 264.86,52.93 264.86,89.22 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFB69E;' />
-<polygon points='219.97,92.37 264.86,92.37 264.86,128.66 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFFFFF;' />
+<polygon class='theme-fill-bg' points='219.97,92.37 264.86,92.37 264.86,128.66 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #F5F6F8;' />
 <polygon points='219.97,131.82 264.86,131.82 264.86,168.10 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFB69F;' />
 <polygon points='219.97,171.26 264.86,171.26 264.86,207.54 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FF4628;' />
 <polygon points='219.97,210.70 264.86,210.70 264.86,246.98 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFBFAA;' />
@@ -92,7 +101,7 @@
 <polygon points='73.61,52.93 73.61,89.22 118.49,89.22 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #A87EFF;' />
 <polygon points='73.61,92.37 73.61,128.66 118.49,128.66 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #A175FF;' />
 <polygon points='73.61,131.82 73.61,168.10 118.49,168.10 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #F9F4FF;' />
-<polygon points='73.61,171.26 73.61,207.54 118.49,207.54 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFFFFF;' />
+<polygon class='theme-fill-bg' points='73.61,171.26 73.61,207.54 118.49,207.54 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #F5F6F8;' />
 <polygon points='73.61,210.70 73.61,246.98 118.49,246.98 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #F2E8FF;' />
 <polygon points='122.39,13.49 122.39,49.78 167.28,49.78 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #AB81FF;' />
 <polygon points='122.39,52.93 122.39,89.22 167.28,89.22 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #D0B3FF;' />
@@ -132,20 +141,20 @@
 <polygon points='366.34,210.70 366.34,246.98 411.22,246.98 ' style='stroke-width: 0.85; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1B4FF;' />
 </g>
 <g clip-path='url(#cpMC4wMHw0MzIuMDB8MC4wMHwyODguMDA=)'>
-<text x='14.00' y='231.83' text-anchor='end' style='font-size: 8.36px;fill: #4D4D4D; font-family: "Arial";' textLength='5.11px' lengthAdjust='spacingAndGlyphs'>F</text>
-<text x='14.00' y='192.39' text-anchor='end' style='font-size: 8.36px;fill: #4D4D4D; font-family: "Arial";' textLength='5.58px' lengthAdjust='spacingAndGlyphs'>E</text>
-<text x='14.00' y='152.95' text-anchor='end' style='font-size: 8.36px;fill: #4D4D4D; font-family: "Arial";' textLength='6.03px' lengthAdjust='spacingAndGlyphs'>D</text>
-<text x='14.00' y='113.51' text-anchor='end' style='font-size: 8.36px;fill: #4D4D4D; font-family: "Arial";' textLength='6.03px' lengthAdjust='spacingAndGlyphs'>C</text>
-<text x='14.00' y='74.07' text-anchor='end' style='font-size: 8.36px;fill: #4D4D4D; font-family: "Arial";' textLength='5.58px' lengthAdjust='spacingAndGlyphs'>B</text>
-<text x='14.00' y='34.63' text-anchor='end' style='font-size: 8.36px;fill: #4D4D4D; font-family: "Arial";' textLength='5.58px' lengthAdjust='spacingAndGlyphs'>A</text>
-<text x='47.26' y='278.27' text-anchor='middle' style='font-size: 8.36px;fill: #4D4D4D; font-family: "Arial";' textLength='4.66px' lengthAdjust='spacingAndGlyphs'>a</text>
-<text x='96.05' y='278.27' text-anchor='middle' style='font-size: 8.36px;fill: #4D4D4D; font-family: "Arial";' textLength='4.66px' lengthAdjust='spacingAndGlyphs'>b</text>
-<text x='144.84' y='278.27' text-anchor='middle' style='font-size: 8.36px;fill: #4D4D4D; font-family: "Arial";' textLength='4.19px' lengthAdjust='spacingAndGlyphs'>c</text>
-<text x='193.63' y='278.27' text-anchor='middle' style='font-size: 8.36px;fill: #4D4D4D; font-family: "Arial";' textLength='4.66px' lengthAdjust='spacingAndGlyphs'>d</text>
-<text x='242.41' y='278.27' text-anchor='middle' style='font-size: 8.36px;fill: #4D4D4D; font-family: "Arial";' textLength='4.66px' lengthAdjust='spacingAndGlyphs'>e</text>
-<text x='291.20' y='278.27' text-anchor='middle' style='font-size: 8.36px;fill: #4D4D4D; font-family: "Arial";' textLength='2.33px' lengthAdjust='spacingAndGlyphs'>f</text>
-<text x='339.99' y='278.27' text-anchor='middle' style='font-size: 8.36px;fill: #4D4D4D; font-family: "Arial";' textLength='4.66px' lengthAdjust='spacingAndGlyphs'>g</text>
-<text x='388.78' y='278.27' text-anchor='middle' style='font-size: 8.36px;fill: #4D4D4D; font-family: "Arial";' textLength='4.66px' lengthAdjust='spacingAndGlyphs'>h</text>
+<text x='14.00' y='231.83' text-anchor='end' style='font-size: 0.836em;fill: #4D4D4D; font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;'>F</text>
+<text x='14.00' y='192.39' text-anchor='end' style='font-size: 0.836em;fill: #4D4D4D; font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;'>E</text>
+<text x='14.00' y='152.95' text-anchor='end' style='font-size: 0.836em;fill: #4D4D4D; font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;'>D</text>
+<text x='14.00' y='113.51' text-anchor='end' style='font-size: 0.836em;fill: #4D4D4D; font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;'>C</text>
+<text x='14.00' y='74.07' text-anchor='end' style='font-size: 0.836em;fill: #4D4D4D; font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;'>B</text>
+<text x='14.00' y='34.63' text-anchor='end' style='font-size: 0.836em;fill: #4D4D4D; font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;'>A</text>
+<text x='47.26' y='278.27' text-anchor='middle' style='font-size: 0.836em;fill: #4D4D4D; font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;'>a</text>
+<text x='96.05' y='278.27' text-anchor='middle' style='font-size: 0.836em;fill: #4D4D4D; font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;'>b</text>
+<text x='144.84' y='278.27' text-anchor='middle' style='font-size: 0.836em;fill: #4D4D4D; font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;'>c</text>
+<text x='193.63' y='278.27' text-anchor='middle' style='font-size: 0.836em;fill: #4D4D4D; font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;'>d</text>
+<text x='242.41' y='278.27' text-anchor='middle' style='font-size: 0.836em;fill: #4D4D4D; font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;'>e</text>
+<text x='291.20' y='278.27' text-anchor='middle' style='font-size: 0.836em;fill: #4D4D4D; font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;'>f</text>
+<text x='339.99' y='278.27' text-anchor='middle' style='font-size: 0.836em;fill: #4D4D4D; font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;'>g</text>
+<text x='388.78' y='278.27' text-anchor='middle' style='font-size: 0.836em;fill: #4D4D4D; font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;'>h</text>
 </g>
 </g>
 </svg>

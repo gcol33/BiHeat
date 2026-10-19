@@ -5,6 +5,8 @@
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/gcol33/BiHeat/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gcol33/BiHeat/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/gcol33/BiHeat/graph/badge.svg)](https://app.codecov.io/gh/gcol33/BiHeat)
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -25,6 +27,16 @@ and another below it, for correlation matrices.
 reaches a split cell through a custom `cell_fun`, alongside its
 clustering and annotation machinery. BiHeat splits each individual cell,
 gives each half its own gradient, and takes two plain matrices.
+
+## Installation
+
+``` r
+
+# install.packages("remotes")
+remotes::install_github("gcol33/BiHeat")
+```
+
+## Quick start
 
 ``` r
 
@@ -123,14 +135,6 @@ breed(observed, predicted) |>
   cross-triangle comparisons are meaningful. Use it when the matrices
   are directly comparable (observed vs. predicted in the same units,
   model A vs. model B accuracy).
-
-## Installation
-
-``` r
-
-# install.packages("remotes")
-remotes::install_github("gcol33/BiHeat")
-```
 
 ## Inside a ggplot
 

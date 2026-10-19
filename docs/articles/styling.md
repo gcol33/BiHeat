@@ -1,5 +1,13 @@
 # Styling and layout
 
+## Installation
+
+``` r
+
+# install.packages("remotes")
+remotes::install_github("gcol33/BiHeat")
+```
+
 ``` r
 
 library(BiHeat)
@@ -52,7 +60,7 @@ biheat(observed, predicted,
                            c("white", "steelblue", "navy")))
 ```
 
-![](styling_files/figure-html/unnamed-chunk-4-1.svg)
+![](styling_files/figure-html/unnamed-chunk-5-1.svg)
 
 A bare character vector is read as the upper palette, with
 `lower_palette` as its companion, which saves a call when both sides are
@@ -65,7 +73,7 @@ biheat(observed, predicted,
        lower_palette = c("grey95", "purple4"))
 ```
 
-![](styling_files/figure-html/unnamed-chunk-5-1.svg)
+![](styling_files/figure-html/unnamed-chunk-6-1.svg)
 
 Three or more stops give a diverging ramp, which suits a matrix centred
 on zero. Residuals are the usual case:
@@ -80,7 +88,7 @@ biheat(observed, residual,
                            c("steelblue", "white", "firebrick")))
 ```
 
-![](styling_files/figure-html/unnamed-chunk-6-1.svg)
+![](styling_files/figure-html/unnamed-chunk-7-1.svg)
 
 The colour a value lands on depends on the range the palette is
 stretched across, which `scale` controls.
@@ -110,7 +118,7 @@ biheat(observed, predicted,
                            c("grey97", "#5D3A9B")))
 ```
 
-![](styling_files/figure-html/unnamed-chunk-7-1.svg)
+![](styling_files/figure-html/unnamed-chunk-8-1.svg)
 
 Ramps that start dark work when the panel is dense enough that pale
 cells would disappear, at the cost of making low values the loudest
@@ -126,7 +134,7 @@ significant digits:
 biheat(observed[, 1:5], predicted[, 1:5], show_values = TRUE)
 ```
 
-![](styling_files/figure-html/unnamed-chunk-8-1.svg)
+![](styling_files/figure-html/unnamed-chunk-9-1.svg)
 
 Labels are sized in millimetres by `value_size`, the same unit
 [`ggplot2::geom_text()`](https://ggplot2.tidyverse.org/reference/geom_text.html)
@@ -139,7 +147,7 @@ needs a smaller number, and the labels start to collide somewhere past
 biheat(observed, predicted, show_values = TRUE, value_size = 2.1)
 ```
 
-![](styling_files/figure-html/unnamed-chunk-9-1.svg)
+![](styling_files/figure-html/unnamed-chunk-10-1.svg)
 
 ## Cell geometry
 
@@ -152,7 +160,7 @@ neighbouring cells legible. `0` makes the grid contiguous:
 biheat(observed, predicted, cell_inset = 0)
 ```
 
-![](styling_files/figure-html/unnamed-chunk-10-1.svg)
+![](styling_files/figure-html/unnamed-chunk-11-1.svg)
 
 Larger values pull the cells apart, which reads well when the individual
 comparison matters more than the pattern across the panel:
@@ -162,7 +170,7 @@ comparison matters more than the pattern across the panel:
 biheat(observed, predicted, cell_inset = 0.15)
 ```
 
-![](styling_files/figure-html/unnamed-chunk-11-1.svg)
+![](styling_files/figure-html/unnamed-chunk-12-1.svg)
 
 The argument accepts anything in `[0, 0.5)`, and `0.5` would shrink a
 cell to nothing.
@@ -179,7 +187,7 @@ biheat(observed, predicted,
        grid_linewidth = 0.6)
 ```
 
-![](styling_files/figure-html/unnamed-chunk-12-1.svg)
+![](styling_files/figure-html/unnamed-chunk-13-1.svg)
 
 Both default to nothing drawn (`NA` colour at width `0`). Outlining
 every triangle on a large matrix costs legibility, so a fine linewidth
@@ -200,7 +208,7 @@ observed_gaps[1, 1] <- NA
 biheat(observed_gaps, predicted, na_colour = "grey80")
 ```
 
-![](styling_files/figure-html/unnamed-chunk-13-1.svg)
+![](styling_files/figure-html/unnamed-chunk-14-1.svg)
 
 The default is `"grey90"`. Something further from the palettes in use
 makes an absent value harder to misread as a low one, which matters most
@@ -226,7 +234,7 @@ expected[2, 4] <- 150
 biheat(counts, expected)
 ```
 
-![](styling_files/figure-html/unnamed-chunk-14-1.svg)
+![](styling_files/figure-html/unnamed-chunk-15-1.svg)
 
 One cell holds the top of both scales and the other 47 sit near the
 bottom. BiHeat has no transform argument, since transforming the matrix
@@ -240,7 +248,7 @@ biheat(log1p(counts), log1p(expected),
        lower_name = "log1p(expected)")
 ```
 
-![](styling_files/figure-html/unnamed-chunk-15-1.svg)
+![](styling_files/figure-html/unnamed-chunk-16-1.svg)
 
 Ranking is the other option when only the ordering matters, and it puts
 both matrices on the same bounded scale as a side effect:
@@ -259,7 +267,7 @@ biheat(rank_matrix(counts), rank_matrix(expected),
        lower_name = "expected (rank)")
 ```
 
-![](styling_files/figure-html/unnamed-chunk-16-1.svg)
+![](styling_files/figure-html/unnamed-chunk-17-1.svg)
 
 The colourbar labels report the transformed numbers under either
 approach, which is why both examples above set `upper_name` and
@@ -291,7 +299,7 @@ round(sort(mae_by_species, decreasing = TRUE), 3)
 biheat(observed, predicted, row_order = worst_first)
 ```
 
-![](styling_files/figure-html/unnamed-chunk-18-1.svg)
+![](styling_files/figure-html/unnamed-chunk-19-1.svg)
 
 Column order works the same way, and the two combine:
 
@@ -303,7 +311,7 @@ biheat(observed, predicted,
        col_order = names(sort(site_totals, decreasing = TRUE)))
 ```
 
-![](styling_files/figure-html/unnamed-chunk-19-1.svg)
+![](styling_files/figure-html/unnamed-chunk-20-1.svg)
 
 Both arguments require a full permutation of the labels, so a partial
 vector stops the call and every row stays in the panel:
@@ -328,7 +336,7 @@ biheat(observed, predicted,
        legend_orientation = "horizontal")
 ```
 
-![](styling_files/figure-html/unnamed-chunk-21-1.svg)
+![](styling_files/figure-html/unnamed-chunk-22-1.svg)
 
 Below the two bars sits the key glyph: a split tile showing which
 triangle belongs to which name, with a callout to each. It follows the
@@ -341,7 +349,7 @@ where the same key would repeat:
 biheat(observed, predicted, show_key = FALSE)
 ```
 
-![](styling_files/figure-html/unnamed-chunk-22-1.svg)
+![](styling_files/figure-html/unnamed-chunk-23-1.svg)
 
 Dropping the key also changes the return type. With no glyph to inject,
 the underlying ggplot comes back rather than a gtable, and that object
@@ -353,7 +361,7 @@ biheat(observed, predicted, show_key = FALSE) +
   ggplot2::theme(legend.position = "bottom")
 ```
 
-![](styling_files/figure-html/unnamed-chunk-23-1.svg)
+![](styling_files/figure-html/unnamed-chunk-24-1.svg)
 
 `legend_position = "none"` removes the legend and the key together.
 
@@ -371,7 +379,7 @@ grid::grid.draw(
 )
 ```
 
-![](styling_files/figure-html/unnamed-chunk-24-1.svg)
+![](styling_files/figure-html/unnamed-chunk-25-1.svg)
 
 Its ranges are yours to supply, so a legend can be shared across several
 panels by passing the pooled range to all of them.
@@ -391,7 +399,7 @@ biheat(observed, predicted,
        caption = "6 species x 8 sites")
 ```
 
-![](styling_files/figure-html/unnamed-chunk-25-1.svg)
+![](styling_files/figure-html/unnamed-chunk-26-1.svg)
 
 Axis titles are blank by default, since the tick labels usually name the
 axis on their own. Supplying `xlab` or `ylab` switches that axis title
@@ -402,7 +410,7 @@ back on:
 biheat(observed, predicted, xlab = "site", ylab = "species")
 ```
 
-![](styling_files/figure-html/unnamed-chunk-26-1.svg)
+![](styling_files/figure-html/unnamed-chunk-27-1.svg)
 
 `upper_name` and `lower_name` override the labels on the colourbars and
 in the key glyph.
@@ -418,7 +426,7 @@ biheat(observed, predicted,
        show_key = FALSE)
 ```
 
-![](styling_files/figure-html/unnamed-chunk-27-1.svg)
+![](styling_files/figure-html/unnamed-chunk-28-1.svg)
 
 ## The theme
 
@@ -437,6 +445,7 @@ for use with
 ``` r
 
 library(ggplot2)
+#> Warning: package 'ggplot2' was built under R version 4.6.1
 
 cells$site    <- factor(cells$col, levels = sites)
 cells$species <- factor(cells$row, levels = rev(species))
@@ -446,7 +455,7 @@ ggplot(cells, aes(site, species, upper = upper, lower = lower)) +
   theme_biheat(base_size = 15)
 ```
 
-![](styling_files/figure-html/unnamed-chunk-28-1.svg)
+![](styling_files/figure-html/unnamed-chunk-29-1.svg)
 
 `base` swaps the theme underneath, which keeps the heatmap adjustments
 while changing everything else:
@@ -458,7 +467,7 @@ ggplot(cells, aes(site, species, upper = upper, lower = lower)) +
   theme_biheat(base = theme_dark(base_size = 11))
 ```
 
-![](styling_files/figure-html/unnamed-chunk-29-1.svg)
+![](styling_files/figure-html/unnamed-chunk-30-1.svg)
 
 ## Keeping a set of figures consistent
 

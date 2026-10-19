@@ -1,9 +1,18 @@
 # Split cells inside a ggplot
 
+## Installation
+
+``` r
+
+# install.packages("remotes")
+remotes::install_github("gcol33/BiHeat")
+```
+
 ``` r
 
 library(BiHeat)
 library(ggplot2)
+#> Warning: package 'ggplot2' was built under R version 4.6.1
 ```
 
 [`biheat()`](https://gillescolling.com/BiHeat/reference/biheat.md) takes
@@ -70,7 +79,7 @@ ggplot(cells, aes(col, row, upper = upper, lower = lower)) +
   theme_biheat()
 ```
 
-![](geom-biheat_files/figure-html/unnamed-chunk-4-1.svg)
+![](geom-biheat_files/figure-html/unnamed-chunk-5-1.svg)
 
 Rows come out in the alphabetical order a discrete axis gives them,
 running bottom to top. Reversing the factor levels puts the first
@@ -88,7 +97,7 @@ ggplot(cells, aes(site, species, upper = upper, lower = lower)) +
   theme_biheat()
 ```
 
-![](geom-biheat_files/figure-html/unnamed-chunk-5-1.svg)
+![](geom-biheat_files/figure-html/unnamed-chunk-6-1.svg)
 
 `split` flips the diagonal, as it does elsewhere in BiHeat:
 
@@ -99,7 +108,7 @@ ggplot(cells, aes(site, species, upper = upper, lower = lower)) +
   theme_biheat()
 ```
 
-![](geom-biheat_files/figure-html/unnamed-chunk-6-1.svg)
+![](geom-biheat_files/figure-html/unnamed-chunk-7-1.svg)
 
 ## Colour ranges
 
@@ -119,7 +128,7 @@ ggplot(cells, aes(site, species, upper = upper, lower = lower)) +
   theme_biheat()
 ```
 
-![](geom-biheat_files/figure-html/unnamed-chunk-7-1.svg)
+![](geom-biheat_files/figure-html/unnamed-chunk-8-1.svg)
 
 Fixing the ranges is what makes several panels comparable. Facets
 computed from the data alone would each get their own range, and a cell
@@ -144,7 +153,7 @@ ggplot(cells, aes(site, species, upper = upper, lower = lower)) +
   theme_biheat()
 ```
 
-![](geom-biheat_files/figure-html/unnamed-chunk-8-1.svg)
+![](geom-biheat_files/figure-html/unnamed-chunk-9-1.svg)
 
 ## Cell geometry and outlines
 
@@ -160,7 +169,7 @@ ggplot(cells, aes(site, species, upper = upper, lower = lower)) +
   theme_biheat()
 ```
 
-![](geom-biheat_files/figure-html/unnamed-chunk-9-1.svg)
+![](geom-biheat_files/figure-html/unnamed-chunk-10-1.svg)
 
 The full set of aesthetics:
 
@@ -191,7 +200,7 @@ ggplot(cells, aes(site, species, upper = upper, lower = lower)) +
   theme_biheat()
 ```
 
-![](geom-biheat_files/figure-html/unnamed-chunk-10-1.svg)
+![](geom-biheat_files/figure-html/unnamed-chunk-11-1.svg)
 
 ## Missing values
 
@@ -210,7 +219,7 @@ ggplot(gappy, aes(site, species, upper = upper, lower = lower)) +
   theme_biheat()
 ```
 
-![](geom-biheat_files/figure-html/unnamed-chunk-11-1.svg)
+![](geom-biheat_files/figure-html/unnamed-chunk-12-1.svg)
 
 ## Faceting
 
@@ -228,7 +237,7 @@ ggplot(cells, aes(site, species, upper = upper, lower = lower)) +
   theme_biheat()
 ```
 
-![](geom-biheat_files/figure-html/unnamed-chunk-12-1.svg)
+![](geom-biheat_files/figure-html/unnamed-chunk-13-1.svg)
 
 [`coord_fixed()`](https://ggplot2.tidyverse.org/reference/coord_fixed.html)
 keeps the cells square whatever the panel dimensions:
@@ -241,7 +250,7 @@ ggplot(cells, aes(site, species, upper = upper, lower = lower)) +
   theme_biheat()
 ```
 
-![](geom-biheat_files/figure-html/unnamed-chunk-13-1.svg)
+![](geom-biheat_files/figure-html/unnamed-chunk-14-1.svg)
 
 ## Continuous axes
 
@@ -270,7 +279,7 @@ ggplot(transects, aes(x, y, upper = upper, lower = lower)) +
   theme_biheat()
 ```
 
-![](geom-biheat_files/figure-html/unnamed-chunk-14-1.svg)
+![](geom-biheat_files/figure-html/unnamed-chunk-15-1.svg)
 
 The two small cells came from a handful of observations, and the split
 inside them is worth less than the split inside the large ones. The
@@ -297,7 +306,7 @@ ggplot(cells, aes(site, species, upper = upper, lower = lower)) +
   theme_biheat()
 ```
 
-![](geom-biheat_files/figure-html/unnamed-chunk-15-1.svg)
+![](geom-biheat_files/figure-html/unnamed-chunk-16-1.svg)
 
 [`geom_point()`](https://ggplot2.tidyverse.org/reference/geom_point.html),
 [`geom_segment()`](https://ggplot2.tidyverse.org/reference/geom_segment.html),
@@ -327,7 +336,7 @@ ggplot(mapping = aes(site, species)) +
   theme_biheat()
 ```
 
-![](geom-biheat_files/figure-html/unnamed-chunk-16-1.svg)
+![](geom-biheat_files/figure-html/unnamed-chunk-17-1.svg)
 
 The same freedom applies to `colour`, `size`, and any other scale the
 layer does not touch, so points, labels, and segments can be added over
@@ -385,7 +394,7 @@ grid::grid.draw(key)
 grid::popViewport(2)
 ```
 
-![](geom-biheat_files/figure-html/unnamed-chunk-17-1.svg)
+![](geom-biheat_files/figure-html/unnamed-chunk-18-1.svg)
 
 Pass
 [`bi_legend()`](https://gillescolling.com/BiHeat/reference/bi_legend.md)
