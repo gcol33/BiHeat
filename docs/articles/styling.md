@@ -445,7 +445,6 @@ for use with
 ``` r
 
 library(ggplot2)
-#> Warning: package 'ggplot2' was built under R version 4.6.1
 
 cells$site    <- factor(cells$col, levels = sites)
 cells$species <- factor(cells$row, levels = rev(species))

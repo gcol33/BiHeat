@@ -8,16 +8,16 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/gcol33/BiHeat/blob/HEAD/DESCRIPTION)
+[`inst/CITATION`](https://github.com/gcol33/BiHeat/blob/HEAD/inst/CITATION)
 
 Colling G (2026). *BiHeat: Diagonally Split Heatmaps for Paired Matrix
 Visualization*. R package version 0.1.0,
-<https://github.com/gcol33/BiHeat>.
+<https://gillescolling.com/BiHeat/>.
 
-    @Manual{,
+    @Manual{colling2026biheat,
       title = {BiHeat: Diagonally Split Heatmaps for Paired Matrix Visualization},
       author = {Gilles Colling},
       year = {2026},
       note = {R package version 0.1.0},
-      url = {https://github.com/gcol33/BiHeat},
+      url = {https://gillescolling.com/BiHeat/},
     }

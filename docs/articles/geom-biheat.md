@@ -12,7 +12,6 @@ remotes::install_github("gcol33/BiHeat")
 
 library(BiHeat)
 library(ggplot2)
-#> Warning: package 'ggplot2' was built under R version 4.6.1
 ```
 
 [`biheat()`](https://gillescolling.com/BiHeat/reference/biheat.md) takes

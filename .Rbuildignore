@@ -11,3 +11,6 @@
 ^LICENSE\.md$
 ^dev_notes$
 ^Rplots\.pdf$
+^\.run.*$
+^sidecars$
+^CITATION\.cff$

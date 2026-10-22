@@ -1,77 +1,100 @@
+
 # BiHeat
 
 *two matrices in one heatmap*
 
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+<!-- badges: start -->
+
 [![R-CMD-check](https://github.com/gcol33/BiHeat/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gcol33/BiHeat/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/gcol33/BiHeat/graph/badge.svg)](https://app.codecov.io/gh/gcol33/BiHeat)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Codecov test
+coverage](https://codecov.io/gh/gcol33/BiHeat/graph/badge.svg)](https://app.codecov.io/gh/gcol33/BiHeat)
+[![License:
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<!-- badges: end -->
 
-**Diagonally split heatmap cells: the upper triangle encodes one matrix, the lower triangle encodes the other.**
+BiHeat draws two numeric matrices of the same shape in one heatmap, such
+as observed and predicted values, a mean and its variance, or
+correlations and their p-values.
 
-`BiHeat` draws two matrices of the same shape in a single heatmap by cutting every
-cell along a diagonal. One value goes in the upper triangle, the other in the lower,
-built on `ggplot2`. The comparison lives inside one cell, at the resolution of a
-single row and column, so the eye stays in one place.
+Each cell is split along a diagonal. The upper triangle shows the value
+from one matrix and the lower triangle the value from the other, each on
+its own colour gradient, and the plots are built with
+[ggplot2](https://ggplot2.tidyverse.org). Both values for a row and
+column sit in the same cell, so you can see where the two matrices agree
+and where they differ, and decide which cells to look at more closely.
 
-Neighbours worth knowing:
-[corrplot](https://cran.r-project.org/package=corrplot) has `corrplot.mixed()`, which
-draws one display above the matrix diagonal and another below it, for correlation
-matrices. [ComplexHeatmap](https://bioconductor.org/packages/ComplexHeatmap/) reaches
-a split cell through a custom `cell_fun`, alongside its clustering and annotation
-machinery. BiHeat splits each individual cell, gives each half its own gradient, and
-takes two plain matrices.
+BiHeat supports:
+
+- **Separate or shared colour scales.** Each triangle gets its own range
+  when the matrices measure different things, or both share one range
+  when their values are directly comparable.
+- **Matrices with different row or column names.**
+  [`breed()`](https://gillescolling.com/BiHeat/reference/breed.html)
+  aligns the two on their shared names and reports the Pearson and
+  Spearman correlation, RMSE, MAE and the number of missing cells.
+- **Split cells inside a ggplot.**
+  [`geom_biheat()`](https://gillescolling.com/BiHeat/reference/geom_biheat.html)
+  draws the same cells as a layer, so facets, coordinate systems and
+  other layers work as usual, and the `fill` scale stays free for them.
+- **Legends for figure assembly.** `bi_legend()` returns the paired
+  colour key as a standalone grob, for figures where the panel is
+  assembled separately.
+
+Other packages draw related displays.
+[corrplot](https://cran.r-project.org/package=corrplot) has
+`corrplot.mixed()`, which draws one display above the diagonal of a
+correlation matrix and another below it.
+[ComplexHeatmap](https://bioconductor.org/packages/ComplexHeatmap/) can
+split a cell through a custom `cell_fun`, alongside its clustering and
+annotation tools. BiHeat splits every cell of two plain matrices and
+gives each half its own gradient.
 
 ## Installation
 
-```r
-# install.packages("remotes")
-remotes::install_github("gcol33/BiHeat")
+``` r
+# install.packages("pak")
+pak::pak("gcol33/BiHeat")
 ```
 
-## Quick start
+## Usage
 
-```r
+1.  Draw the heatmap from two matrices with `biheat()`.
+2.  For more control, pair the matrices with `breed()`, set rendering
+    options with `incubate()` and draw with `plot()`.
+3.  Pull the cell values back out as a data frame with `comes_out()`.
+
+``` r
 library(BiHeat)
 
 set.seed(1)
 species   <- LETTERS[1:6]
 sites     <- letters[1:8]
 observed  <- matrix(runif(48), 6, 8, dimnames = list(species, sites))
-predicted <- observed + matrix(rnorm(48, sd = 0.1), 6, 8,
-                               dimnames = list(species, sites))
+noise     <- matrix(rnorm(48, sd = 0.1), 6, 8)
+predicted <- observed + noise
 
 biheat(observed, predicted)
 ```
 
-Upper triangle is `observed` (white to red), lower triangle is `predicted`
-(white to blue). Where the two disagree, the split is visible.
+<img src="man/figures/README-quick-1.png" alt="Heatmap of 6 species by 8 sites in which every cell is split along its diagonal; the upper triangle shows the observed value on a white-to-red gradient and the lower triangle the predicted value on a white-to-blue gradient, and the two triangles of each cell have similar shades because the predictions differ from the observations by small noise"  />
 
-Two matrices of the same shape come up constantly: observed vs. predicted, mean vs.
-variance, correlation vs. significance, train vs. test, model A vs. model B,
-before vs. after. All of them fit one BiHeat plot.
+The first matrix fills the upper triangle (white to red) and the second
+the lower triangle (white to blue). Where the two disagree, the halves
+of a cell differ in shade.
 
-## One call or three stages
+The input is two numeric matrices. Where both carry row or column names,
+they are matched on the names they share; an axis without names on both
+sides is matched by position and needs the same length. [Getting started
+with BiHeat](https://gillescolling.com/BiHeat/articles/biheat.html)
+describes how the matrices are aligned and how missing cells are drawn.
 
-`biheat()` is the one-shot entry point. It is exactly equivalent to the three-stage
-lifecycle below, so use whichever reads better in context:
+## Pairing, styling and drawing in steps
 
-```r
-# one-shot
-biheat(observed, predicted, scale = "shared", split = "up")
+`biheat()` is a shortcut for three steps. `breed()` pairs the two
+matrices into a clutch, an object holding both matrices aligned on their
+shared names together with their comparison statistics:
 
-# lifecycle
-breed(observed, predicted) |>
-  incubate(scale = "shared", split = "up") |>
-  plot()
-```
-
-`breed()` pairs the two matrices into a **clutch** and aligns them on overlapping
-row and column names, then computes Pearson and Spearman correlation, RMSE, MAE, and
-NA counts. `incubate()` layers on rendering options (additive, the way `ggplot2`'s
-`+` is). `plot()` draws.
-
-```r
+``` r
 clutch <- breed(observed, predicted)
 clutch
 #> <clutch>
@@ -82,82 +105,126 @@ clutch
 #>   pearson: 0.955   rmse: 0.0908   mae: 0.0693
 ```
 
-## Public API
+`incubate()` adds rendering options to a clutch, and each call adds to
+the options set before. `plot()` draws it:
 
-| Function         | Role                                            |
-|------------------|-------------------------------------------------|
-| `biheat()`       | One-shot heatmap from two matrices              |
-| `breed()`        | Pair matrices into a clutch (auto-aligns names) |
-| `incubate()`     | Set rendering options on a clutch (additive)    |
-| `plot(clutch)`   | Render a clutch, panel and paired legend        |
-| `switch_sides()` | Swap which matrix is upper / lower              |
-| `straighten()`   | Flip the diagonal direction                     |
-| `bothways()`     | Toggle separate / shared colour scales          |
-| `comes_out()`    | Pull the tidy data back out                     |
-| `geom_biheat()`  | Draw split cells as a ggplot2 layer             |
-| `bi_legend()`    | Paired-palette legend as a standalone grob      |
-| `palettes()`     | Bundle paired gradient palettes                 |
-| `theme_biheat()` | Minimal heatmap theme                           |
-
-The verbs go clutch-in, clutch-out, so they chain:
-
-```r
-breed(observed, predicted) |>
-  switch_sides() |>   # swap which matrix is on top
-  straighten() |>     # flip the diagonal
-  bothways() |>       # toggle separate <-> shared scale
+``` r
+clutch |>
+  incubate(scale = "shared", split = "up") |>
   plot()
 ```
 
-## Separate or shared scales
+The verbs take a clutch and return one, so they chain. `switch_sides()`
+swaps which matrix is on top, `straighten()` flips the direction of the
+diagonal and `bothways()` toggles between separate and shared colour
+scales:
 
-- `scale = "separate"` (default) gives the upper and lower triangles their own
-  numeric ranges. Use it when the two matrices measure different things
-  (correlation vs. p-value, mean vs. variance).
-- `scale = "shared"` puts both triangles on a common range, so cross-triangle
-  comparisons are meaningful. Use it when the matrices are directly comparable
-  (observed vs. predicted in the same units, model A vs. model B accuracy).
+``` r
+clutch |>
+  switch_sides() |>
+  straighten() |>
+  bothways() |>
+  plot()
+```
 
-## Inside a ggplot
+## Separate or shared colour scales
 
-`geom_biheat()` draws the same split cells as a layer, from a long data frame with
-one row per cell. Each triangle carries its own gradient, so the `fill` scale stays
-free for the rest of the plot.
+- `scale = "separate"` (the default) gives the upper and lower triangles
+  their own ranges. Use it when the two matrices measure different
+  things, such as a correlation and its p-value or a mean and its
+  variance.
+- `scale = "shared"` puts both triangles on one range, so the colours of
+  the two halves can be compared directly. Use it when the matrices are
+  in the same units, such as observed and predicted values or the
+  accuracy of two models.
 
-```r
+[Styling and
+layout](https://gillescolling.com/BiHeat/articles/styling.html) covers
+palettes, printed values, cell geometry, skewed values and the order of
+rows and columns.
+
+## Split cells inside a ggplot
+
+`geom_biheat()` draws the split cells as a ggplot2 layer from a data
+frame with one row per cell, which is the shape `comes_out()` returns:
+
+``` r
 library(ggplot2)
 
-cells <- comes_out(breed(observed, predicted))
+cells <- comes_out(clutch)
 
 ggplot(cells, aes(col, row, upper = upper, lower = lower)) +
   geom_biheat() +
   theme_biheat()
 ```
 
-`comes_out()` returns one row per cell, which is the shape the layer wants. Neither
-triangle consumes the `fill` scale, so it stays free for another layer, and facets,
-coordinate systems, and themes all work as usual.
-
-`bi_legend()` returns the paired-palette key as a standalone grob for figures where
-the panel is assembled separately.
+Each triangle carries its own gradient, so neither uses the `fill`
+scale, which stays free for another layer. [Split cells inside a
+ggplot](https://gillescolling.com/BiHeat/articles/geom-biheat.html)
+shows faceting, continuous axes and layers drawn on top.
 
 ## Documentation
 
-- [Getting started](https://gillescolling.com/BiHeat/articles/biheat.html)
-- [Styling and layout](https://gillescolling.com/BiHeat/articles/styling.html)
-- [Split cells inside a ggplot](https://gillescolling.com/BiHeat/articles/geom-biheat.html)
+Start with [Getting started with
+BiHeat](https://gillescolling.com/BiHeat/articles/biheat.html): from two
+matrices to a split heatmap, how the matrices are aligned and what
+`plot()` returns.
+
+- [Styling and
+  layout](https://gillescolling.com/BiHeat/articles/styling.html):
+  palettes, printed values, cell geometry and row and column order.
+- [Split cells inside a
+  ggplot](https://gillescolling.com/BiHeat/articles/geom-biheat.html):
+  the `geom_biheat()` layer with facets, continuous axes and other
+  layers.
+- [Full reference](https://gillescolling.com/BiHeat/reference/): every
+  function, grouped by job.
+
+## Getting help
+
+Questions and bug reports go to the [GitHub
+issues](https://github.com/gcol33/BiHeat/issues). A bug report is
+easiest to act on with a small reproducible example, for instance made
+with [reprex](https://reprex.tidyverse.org/).
+
+## Support
+
+> “Software is like sex: it’s better when it’s free.” — Linus Torvalds
+
+I’m a PhD student who builds R packages in my free time because I
+believe good tools should be free and open. I started these projects for
+my own work and figured others might find them useful too.
+
+If this package saved you some time, buying me a coffee is a nice way to
+say thanks. It helps with my coffee addiction.
+
+[![Buy Me A
+Coffee](https://img.shields.io/badge/-Buy%20me%20a%20coffee-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/gcol33)
 
 ## License
 
-MIT (c) Gilles Colling. See the LICENSE file.
+BiHeat is licensed under MIT.
 
 ## Citation
 
-```bibtex
-@software{biheat,
-  author = {Colling, Gilles},
-  title  = {BiHeat: Diagonally Split Heatmaps for Paired Matrix Visualization},
-  year   = {2026},
-  url    = {https://github.com/gcol33/BiHeat}
+``` text
+Colling G (2026). _BiHeat: Diagonally Split Heatmaps for Paired Matrix
+Visualization_. R package version 0.1.0,
+<https://gillescolling.com/BiHeat/>.
+```
+
+BibTeX:
+
+``` bibtex
+@Manual{colling2026biheat,
+  title = {BiHeat: Diagonally Split Heatmaps for Paired Matrix Visualization},
+  author = {Gilles Colling},
+  year = {2026},
+  note = {R package version 0.1.0},
+  url = {https://gillescolling.com/BiHeat/},
 }
 ```
+
+Download the citation as
+[BibTeX](https://gillescolling.com/BiHeat/BiHeat.bib) or
+[RIS](https://gillescolling.com/BiHeat/BiHeat.ris).
